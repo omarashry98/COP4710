@@ -10,104 +10,124 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script></script>
     </head>
-    <div class="container mt-5">
-        <button
-            type="button"
-            class="btn btn-primary"
-            data-toggle="modal"
-            data-target="#createRSOModal"
-        >
-            Create RSO
-        </button>
-        <!-- Create RSO Modal -->
-        <div
-            class="modal fade"
-            id="createRSOModal"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="createRSOModalLabel"
-            aria-hidden="true"
-        >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createRSOModalLabel">
-                            Create RSO
-                        </h5>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="rsoName">RSO Name</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="rsoName"
-                                    placeholder="Enter RSO name"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="rsoDescription"
-                                    >RSO Description</label
-                                >
-                                <textarea
-                                    class="form-control"
-                                    id="rsoDescription"
-                                    rows="3"
-                                ></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="rsoEmail">RSO Email</label>
-                                <input
-                                    type="email"
-                                    class="form-control"
-                                    id="rsoEmail"
-                                    placeholder="Enter RSO email"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="university">University</label>
-                                <select class="form-control" id="university">
-                                    <option>University A</option>
-                                    <option>University B</option>
-                                    <option>University C</option>
-                                    <!-- Add more options here if needed -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="rsoAdmin">RSO Admin</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="rsoAdmin"
-                                    placeholder="Enter RSO admin name"
-                                />
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                        >
-                            Close
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            Save changes
-                        </button>
+    <body>
+        <div class="container mt-5">
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#createRSOModal"
+            >
+                Create RSO
+            </button>
+            <!-- Create RSO Modal -->
+            <div
+                class="modal fade"
+                id="createRSOModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="createRSOModalLabel"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createRSOModalLabel">
+                                Create RSO
+                            </h5>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createRSOForm">
+                                <div class="form-group">
+                                    <label for="rsoName">RSO Name</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="rsoName"
+                                        placeholder="Enter RSO name"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="rsoDescription"
+                                        >RSO Description</label
+                                    >
+                                    <textarea
+                                        class="form-control"
+                                        id="rsoDescription"
+                                        rows="3"
+                                    ></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rsoEmail">RSO Email</label>
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        id="rsoEmail"
+                                        placeholder="Enter RSO email"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label for="university">University</label>
+                                    <select
+                                        class="form-control"
+                                        id="university"
+                                    >
+                                        <option>University A</option>
+                                        <option>University B</option>
+                                        <option>University C</option>
+                                        <!-- Add more options here if needed -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rsoAdmin">RSO Admin</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="rsoAdmin"
+                                        placeholder="Enter RSO admin name"
+                                    />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                            >
+                                Close
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                id="saveChangesBtn"
+                            >
+                                Save changes
+                            </button>
+                            <script>
+                                document
+                                    .getElementById("saveChangesBtn")
+                                    .addEventListener("click", function () {
+                                        validateCreateRSOForm();
+                                    });
+                            </script>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <script>
+            
+        </script>
+    </body>
 </html>
