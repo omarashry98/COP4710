@@ -135,5 +135,45 @@
                 </div>
             </div>
         </div>
+        <script>
+            // Get form elements
+            const form = document.querySelector('#createEventModal form');
+            const eventName = document.querySelector('#eventName');
+            const eventCategory = document.querySelector('#eventCategory');
+            const eventDescription = document.querySelector('#eventDescription');
+            const eventDateTime = document.querySelector('#eventDateTime');
+            const eventLocation = document.querySelector('#eventLocation');
+            const contactPhone = document.querySelector('#contactPhone');
+            const contactEmail = document.querySelector('#contactEmail');
+        
+            // Add form submission event listener
+            form.addEventListener('submit', function (event) {
+                // Prevent form submission
+                event.preventDefault();
+        
+                // Check if all required fields are filled
+                if (!eventName.value || !eventCategory.value || !eventDateTime.value || !eventLocation.value || !contactPhone.value || !contactEmail.value) {
+                    alert('Please fill out all required fields!');
+                    return;
+                }
+        
+                // Check if the event category is valid
+                const validCategories = ['social', 'fundraising', 'tech talks', 'other'];
+                if (!validCategories.includes(eventCategory.value.toLowerCase())) {
+                    alert('Invalid event category!');
+                    return;
+                }
+        
+                // Check if the contact email is a valid email address
+                const emailRegex = /\S+@\S+\.\S+/;
+                if (!emailRegex.test(contactEmail.value)) {
+                    alert('Invalid email address!');
+                    return;
+                }
+        
+                // Submit form
+                form.submit();
+            });
+        </script>
     </body>
 </html>
