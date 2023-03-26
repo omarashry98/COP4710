@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>College Event Website</title>
+        <!-- Add Bootstrap CSS and JS -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <style>
+            .card {
+                min-height: 400px;
+                margin-bottom: 30px;
+                flex-grow: 2;
+                width: 208.5%;
+            }
+
+            #eventsContainer {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 5;
+                align-items: left;
+                padding: 50px 0;
+            }
+
+            .event-filter-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 20px 0;
+                border-bottom: 1px solid #ccc;
+                position: relative;
+            }
+
+            .event-filter {
+                display: inline-block;
+                margin-right: 10px;
+                padding: 10px 20px;
+                color: #000;
+                font-size: 16px;
+                text-decoration: none;
+                border: none;
+                background-color: transparent;
+            }
+
+            .event-filter.active {
+                background-color: transparent;
+                box-shadow: none;
+            }
+
+            #filterBtn {
+                margin-top: 30px;
+                margin-bottom: -100px;
+            }
+
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .navbar-brand,
+            .nav-link {
+                color: #333;
+                font-weight: bold;
+            }
+
+            #navBarBtns {
+                margin-left: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div>
+                <a class="navbar-brand" href="#">College Event Website</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="mx-auto">
+                <div id="navBarBtns">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#approvePublicEventModal"
+                    >
+                        Approve RSO
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#createEventModal"
+                    >
+                        Create Event
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#createRSOModal"
+                    >
+                        Create RSO
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#createUniversityModal"
+                    >
+                        Create University
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#joinRSOModal"
+                    >
+                        Join RSO
+                    </button>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Filter Buttons -->
+        <div class="container my-3">
+            <div class="row justify-content-left">
+                <div class="col-md-8">
+                    <div
+                        id="filterBtn"
+                        class="event-filter-container btn-group btn-group-lg w-100"
+                        role="group"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="todayFilter"
+                        >
+                            Today
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="tomorrowFilter"
+                        >
+                            Tomorrow
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="weeklyFilter"
+                        >
+                            Weekly
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="monthlyFilter"
+                        >
+                            Monthly
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Cards -->
+        <div class="container mt-5">
+            <div class="row" id="eventsContainer">
+                <!-- Event cards will be appended here -->
+            </div>
+        </div>
+
+        <!-- Approve Public Event Modal -->
+        <div
+            class="modal fade"
+            id="approvePublicEventModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="approvePublicEventModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5
+                            class="modal-title"
+                            id="approvePublicEventModalLabel"
+                        >
+                            Approve Public Event
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="approvePublicEventForm">
+                            <div class="form-group">
+                                <label for="eventTitle">Event Title</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventTitle"
+                                    placeholder="Enter event title"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDescription"
+                                    >Event Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="eventDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDateTime"
+                                    >Event Date and Time</label
+                                >
+                                <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="eventDateTime"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventLocation"
+                                    >Event Location</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventLocation"
+                                    placeholder="Enter event location"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Contact Phone</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="contactPhone"
+                                    placeholder="Enter contact phone"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Contact Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="contactEmail"
+                                    placeholder="Enter contact email"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="approveBtn"
+                        >
+                            Approve
+                        </button>
+
+                        <script>
+                            document
+                                .getElementById("approveBtn")
+                                .addEventListener("click", function () {
+                                    // validate form before submitting
+                                    validateApprovePublicEventForm();
+                                });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Event Modal -->
+        <div
+            class="modal fade"
+            id="createEventModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createEventModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createEventModalLabel">
+                            Create Event
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="eventName">Event Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventName"
+                                    placeholder="Enter event name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventCategory"
+                                    >Event Category</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventCategory"
+                                    placeholder="Enter event category"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDescription"
+                                    >Event Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="eventDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDateTime"
+                                    >Event Date and Time</label
+                                >
+                                <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="eventDateTime"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventLocation"
+                                    >Event Location</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventLocation"
+                                    placeholder="Enter event location"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Contact Phone</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="contactPhone"
+                                    placeholder="Enter contact phone"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Contact Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="contactEmail"
+                                    placeholder="Enter contact email"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create RSO Modal -->
+        <div
+            class="modal fade"
+            id="createRSOModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createRSOModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createRSOModalLabel">
+                            Create RSO
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createRSOForm">
+                            <div class="form-group">
+                                <label for="rsoName">RSO Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rsoName"
+                                    placeholder="Enter RSO name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="rsoDescription"
+                                    >RSO Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="rsoDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="rsoEmail">RSO Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="rsoEmail"
+                                    placeholder="Enter RSO email"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="university">University</label>
+                                <select class="form-control" id="university">
+                                    <option>University A</option>
+                                    <option>University B</option>
+                                    <option>University C</option>
+                                    <!-- Add more options here if needed -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="rsoAdmin">RSO Admin</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rsoAdmin"
+                                    placeholder="Enter RSO admin name"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="saveChangesBtn"
+                        >
+                            Save changes
+                        </button>
+                        <script>
+                            document
+                                .getElementById("saveChangesBtn")
+                                .addEventListener("click", function () {
+                                    validateCreateRSOForm();
+                                });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create University Modal -->
+        <div
+            class="modal fade"
+            id="createUniversityModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createUniversityModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createUniversityModalLabel">
+                            Create University
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="universityName"
+                                    >University Name</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="universityName"
+                                    placeholder="Enter university name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="universityLocation"
+                                    >University Location</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="universityLocation"
+                                    placeholder="Enter university location"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="universityDescription"
+                                    >University Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="universityDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="numberOfStudents"
+                                    >Number of Students</label
+                                >
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="numberOfStudents"
+                                    placeholder="Enter number of students"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="universityPictures"
+                                    >University Pictures</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="universityPictures"
+                                    placeholder="Enter university pictures"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Join RSO Modal -->
+        <div
+            class="modal fade"
+            id="joinRSOModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="joinRSOModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="joinRSOModalLabel">
+                            Join RSO
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="rsoName">RSO Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rsoName"
+                                    placeholder="Enter RSO name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="university">University</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="university"
+                                    placeholder="Enter university name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="adminEmail">Admin Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="adminEmail"
+                                    placeholder="Enter admin email"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Join RSO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Store the filter buttons in an array
+            const filterButtons = document.querySelectorAll(".event-filter");
+
+            // Add event listener to each button
+            filterButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach((btn) => {
+                        btn.classList.remove("active");
+                    });
+
+                    // Add active class to clicked button
+                    button.classList.add("active");
+                });
+            });
+
+            // Sample data - replace this with an API call to fetch events from your backend
+            const events = [
+                {
+                    id: 1,
+                    name: "Event Name 1",
+                    description: "Event Description 1",
+                    image: "https://via.placeholder.com/150",
+                },
+                {
+                    id: 2,
+                    name: "Event Name 2",
+                    description: "Event Description 2",
+                    image: "https://via.placeholder.com/150",
+                },
+                {
+                    id: 3,
+                    name: "Event Name 3",
+                    description: "Event Description 3",
+                    image: "https://via.placeholder.com/150",
+                },
+            ];
+
+            function createEventCard(event) {
+                return `
+                <div class="col-md-6 col-lg-4 mb-5">
+                  <div class="card h-100 flex-grow-1">
+                    <img src="${event.image}" class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="...">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">${event.name}</h5>
+                      <p class="card-text mb-4">${event.description}</p>
+                      <div class="mt-auto">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventModal" onclick="loadEventDetails(${event.id})">
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+
+            function loadEventDetails(eventId) {
+                // Replace this with an API call to fetch event details from your backend
+                const event = events.find((e) => e.id === eventId);
+
+                // Set event details in the modal
+                document.getElementById("eventModalLabel").innerText =
+                    event.name;
+                document.getElementById("eventDateTime").innerText =
+                    event.dateTime;
+                document.getElementById("eventLocation").innerText =
+                    event.location;
+                document.getElementById("eventDescription").innerText =
+                    event.description;
+                document.getElementById("contactPhone").innerText =
+                    event.contactPhone;
+                document.getElementById("contactEmail").innerText =
+                    event.contactEmail;
+            }
+
+            function displayEvents() {
+                const eventsContainer =
+                    document.getElementById("eventsContainer");
+                eventsContainer.innerHTML = "";
+
+                for (const event of events) {
+                    const eventCard = createEventCard(event);
+                    eventsContainer.innerHTML += eventCard;
+                }
+            }
+
+            // Call displayEvents on page load
+            displayEvents();
+        </script>
+    </body>
+</html>

@@ -6,6 +6,8 @@ let userId = 0;
 let fullName = "";
 
 function login() {
+    // Clear the login result regardless of status
+    document.getElementById("login-result").innerHTML = "";
     let login = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
@@ -21,7 +23,6 @@ function login() {
                 let jsonObject = JSON.parse(xhr.responseText);
 
                 if (jsonObject.error !== "No Records found") {
-                    document.getElementById("login-result").innerHTML = "";
                     userId = jsonObject.id;
                     fullName = jsonObject.fullName;
 
@@ -31,7 +32,8 @@ function login() {
                     document.getElementById("password").value = "";
                 }
             } else if (this.status === 404) {
-                document.getElementById("login-result").innerHTML = "Invalid Credentials";
+                document.getElementById("login-result").innerHTML =
+                    "Invalid Credentials";
             }
         };
         xhr.send(jsonPayload);
