@@ -20,17 +20,18 @@ function login() {
             if (this.readyState === 4 && this.status === 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
 
-                if (jsonObject.fullName.length === 0) {
-                    document.getElementById("login-result").innerHTML = "User/Password combination incorrect";
-                    return;
-                } else {
+                if (jsonObject.error !== "No Records found") {
+                    document.getElementById("login-result").innerHTML = "";
                     userId = jsonObject.id;
                     fullName = jsonObject.fullName;
-    
-                    saveUserCookie();
-                }
 
-                
+                    saveUserCookie();
+                    // Clear input fields
+                    document.getElementById("username").value = "";
+                    document.getElementById("password").value = "";
+                }
+            } else if (this.status === 404) {
+                document.getElementById("login-result").innerHTML = "Invalid Credentials";
             }
         };
         xhr.send(jsonPayload);
