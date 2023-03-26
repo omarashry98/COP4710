@@ -1,40 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>SignUp Form</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="box2">
-    <div class="form">
-      <h2>Sign Up</h2>
-      <div class="inputBox">
-        <span>Email</span>
-        <input type="text" required="required">
-      </div>
-      <div class="inputBox">
-        <span>Password</span>
-        <input type="password" required="required">
-      </div>
-      <div class="inputBox">
-        <span>Repeat Password</span>
-        <input type="password" required="required">
-      </div>
+    <head>
+        <meta charset="UTF-8" />
+        <title>SignUp Form</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="js/script.js"></script>
+        <script src="schools.json"></script>
+    </head>
+    <body>
+        <div class="box2" >
+            <div class="form">
+                <h2>Sign Up</h2>
+                <div class="inputBox">
+                    <span>Email</span>
+                    <input type="text" required="required" />
+                </div>
+                <div class="inputBox">
+                    <span>Password</span>
+                    <input type="password" required="required" />
+                </div>
+                <div class="inputBox">
+                    <span>Repeat Password</span>
+                    <input type="password" required="required" />
+                </div>
 
-      <div class="inputBox">
-        <span>Enter your university</span>
-        <input type="text" id="input" required="required" autocomplete="off">
-        <ul class="list"></ul>
-        <script src="script.js"></script>
-      </div>
-      
-      <input type="submit" value="Sign Up">
-      <div class="links">
-        <a href="index.html">Already have an Account?</a>
-      </div> 
-    </div>
-    
-  </div>
-</body>
+                <div class="inputBox">
+                    <span>Enter your university</span>
+                    <input
+                        type="text"
+                        id="input"
+                        required="required"
+                        autocomplete="off"
+                    />
+                    <ul class="list"></ul>
+                    
+                </div>
+
+                <input type="submit" value="Sign Up" />
+                <div class="links">
+                    <a href="index.html">Already have an Account?</a>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
