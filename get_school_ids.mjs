@@ -8,7 +8,7 @@ async function getAllSchoolIds() {
     let allSchools = [];
 
     while (true) {
-        const url = `https://api.data.gov/ed/collegescorecard/v1/schools?per_page=${perPage}&page=${page}&_fields=id,school.name&api_key=JsmKNvEV08xASFhLoG8NgPyaHROVjSDhfmmKOk83`;
+        const url = `https://api.data.gov/ed/collegescorecard/v1/schools?per_page=${perPage}&page=${page}&_fields=id,school.name,school.school_url&api_key=JsmKNvEV08xASFhLoG8NgPyaHROVjSDhfmmKOk83`;
         const response = await fetch(url);
         const data = await response.json();
         const schools = data.results;
@@ -25,6 +25,7 @@ async function getAllSchoolIds() {
         return {
             name: school["school.name"],
             id: school.id,
+            school_url: school["school.school_url"]
         };
     });
 
