@@ -93,4 +93,46 @@
             </div>
         </div>
     </body>
+    <script>
+        // Get form elements
+        const rsoNameInput = document.getElementById("rsoName");
+        const universityInput = document.getElementById("university");
+        const adminEmailInput = document.getElementById("adminEmail");
+        const joinRSOButton = document.querySelector(
+            "#joinRSOModal button.btn-primary"
+        );
+
+        // Add event listener to Join RSO button
+        joinRSOButton.addEventListener("click", (event) => {
+            // Prevent default form submission behavior
+            event.preventDefault();
+
+            // Validate form inputs
+            if (rsoNameInput.value.trim() === "") {
+                alert("Please enter an RSO name.");
+                return;
+            }
+
+            if (universityInput.value.trim() === "") {
+                alert("Please enter a university name.");
+                return;
+            }
+
+            if (adminEmailInput.value.trim() === "") {
+                alert("Please enter an admin email.");
+                return;
+            }
+
+            if (
+                !adminEmailInput.value.includes("@") ||
+                !adminEmailInput.value.endsWith(".edu")
+            ) {
+                alert("Please enter a valid .edu email address.");
+                return;
+            }
+
+            // If form inputs are valid, submit the form
+            document.querySelector("#joinRSOModal form").submit();
+        });
+    </script>
 </html>
