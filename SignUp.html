@@ -4,24 +4,28 @@
         <meta charset="UTF-8" />
         <title>SignUp Form</title>
         <link rel="stylesheet" href="styles.css" />
-        <script src="js/script.js"></script>
-        <script src="schools.json"></script>
+        <script src="js/code.js"></script>
+        <script src="json/schools.json"></script>
     </head>
     <body>
-        <div class="box2" >
+        <div class="box2">
             <div class="form">
                 <h2>Sign Up</h2>
                 <div class="inputBox">
+                    <span>Full Name</span>
+                    <input id="name" type="text" required="required" />
+                </div>
+                <div class="inputBox">
                     <span>Email</span>
-                    <input type="text" required="required" />
+                    <input id="email" type="text" required="required" />
                 </div>
                 <div class="inputBox">
                     <span>Password</span>
-                    <input type="password" required="required" />
+                    <input id="pass" type="password" required="required" />
                 </div>
                 <div class="inputBox">
                     <span>Repeat Password</span>
-                    <input type="password" required="required" />
+                    <input id="cfnpass" type="password" required="required" />
                 </div>
 
                 <div class="inputBox">
@@ -33,13 +37,17 @@
                         autocomplete="off"
                     />
                     <ul class="list"></ul>
-                    
+                </div>
+                <div class="inputBox">
+                    <span>User Level</span>
+                    <input id="userlevel" type="text" required="required" />
                 </div>
 
-                <input type="submit" value="Sign Up" />
+                <input type="submit" value="Sign Up" onClick="signUp()"/>
                 <div class="links">
                     <a href="index.html">Already have an Account?</a>
                 </div>
+                <div id="signup-result"></div>
             </div>
         </div>
     </body>
