@@ -5,9 +5,103 @@ const extension = "php";
 let userId = 0;
 let fullName = "";
 
+let uniId = 0;
+let uniUrl = "";
+
+window.onload = function () {
+    // Your code here
+    fetch("http://collegeeventwebsite.com/json/schools.json")
+        .then((response) => response.json())
+        .then((data) => {
+            let names = data.map((obj) => obj["name"]);
+            let sortedNames = names.sort();
+
+            let input = document.getElementById("input");
+
+            input.addEventListener("keyup", (e) => {
+                removeElements();
+                for (let i of sortedNames) {
+                    if (
+                        i.toLowerCase().startsWith(input.value.toLowerCase()) &&
+                        input.value != ""
+                    ) {
+                        let listItem = document.createElement("li");
+
+                        listItem.classList.add("list-items");
+                        listItem.style.cursor = "pointer";
+                        listItem.setAttribute(
+                            "data-university-id",
+                            data.find((obj) => obj["name"] === i).id
+                        ); // add data-university-id attribute
+
+                        listItem.setAttribute(
+                            "data-university-email",
+                            data.find((obj) => obj["name"] === i).school_url
+                        ); // add data-university-email attribute
+
+                        let word =
+                            "<b>" + i.substr(0, input.value.length) + "</b>";
+                        word += i.substr(input.value.length);
+
+                        listItem.innerHTML = word;
+                        const ulElement = document
+                            .querySelector(".list")
+                            .appendChild(listItem);
+                        ulElement.style.backgroundColor = "#45f3ff";
+                        ulElement.style.borderRadius = "0 0 5px 5px";
+                        ulElement.style.top = "100%"; // positions the list beneath the input box
+                        ulElement.style.position = "relative";
+                        ulElement.style.width = "100%";
+                        ulElement.style.zIndex = "999";
+                    }
+                }
+                addListItemsEventListeners();
+            });
+
+            function addListItemsEventListeners() {
+                const listItems = document.querySelectorAll(".list-items");
+                listItems.forEach((listItem) => {
+                    listItem.addEventListener("click", () => {
+                        input.value = listItem.textContent;
+                        const universityId =
+                            listItem.getAttribute("data-university-id"); // retrieve university id
+                        const universityEmail = listItem.getAttribute(
+                            "data-university-email"
+                        ); // retrieve university email
+                        uniId = universityId;
+                        uniUrl = universityEmail;
+                        removeElements();
+                    });
+                });
+            }
+
+            function removeElements() {
+                let items = document.querySelectorAll(".list-items");
+                items.forEach((item) => {
+                    item.remove();
+                });
+            }
+
+            document.addEventListener("click", (e) => {
+                const dropdown = document.querySelector(".list");
+                if (!dropdown.contains(e.target)) {
+                    removeElements();
+                }
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") {
+                    removeElements();
+                }
+            });
+        })
+        .catch((error) => console.log(error));
+};
+
 function login() {
     // Clear the login result regardless of status
     document.getElementById("login-result").innerHTML = "";
+
     let login = document.getElementById("username").value;
     let password = document.getElementById("password").value;
 
@@ -39,6 +133,85 @@ function login() {
         xhr.send(jsonPayload);
     } catch (err) {
         document.getElementById("login-result").innerHTML = err.message;
+    }
+}
+
+function signUp() {
+    document.getElementById("signup-result").innerHTML = "";
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("cfnpass").value;
+    let userLevel = document.getElementById("userlevel").value;
+    let universityId = uniId;
+
+    if (!validateEmailDomain(email, uniUrl)) {
+        document.getElementById("signup-result").innerHTML =
+            "Email domain and University does not match";
+        return;
+    }
+    userLevel = getUserType(userLevel);
+    if (userLevel === null) {
+        document.getElementById("signup-result").innerHTML =
+            "Please choose Super Admin, Admin, or Student";
+        return;
+    }
+
+    let tmp = {
+        fullname: name,
+        email: email,
+        password: password,
+        universityid: universityId,
+        rsolevel: 0,
+        userlevel: userLevel,
+    };
+    let jsonPayload = JSON.stringify(tmp);
+    let url = urlBase + "/Signup." + extension;
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                if (jsonObject.error === "") {
+                    userId = jsonObject.id;
+                    fullName = jsonObject.fullName;
+
+                    saveUserCookie();
+                    // move them to another page
+                    document.getElementById("name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("pass").value = "";
+                    document.getElementById("cfnpass").value = "";
+                    document.getElementById("userlevel").value = "";
+                    document.getElementById("input").value = "";
+                }
+            } else if (this.status === 400) {
+                document.getElementById("signup-result").innerHTML =
+                    "Email already exists";
+            }
+        };
+        xhr.send(jsonPayload);
+    } catch (err) {
+        document.getElementById("signup-result").innerHTML = err.message;
+    }
+}
+
+function validateEmailDomain(email, schoolUrl) {
+    const domain = schoolUrl.split(".")[1];
+    return email.includes(`${domain}.edu`);
+}
+
+function getUserType(userType) {
+    switch (userType) {
+        case "Super Admin":
+            return 1;
+        case "Admin":
+            return 2;
+        case "Student":
+            return 3;
+        default:
+            return null;
     }
 }
 
