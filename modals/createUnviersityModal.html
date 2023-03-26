@@ -120,5 +120,54 @@
                 </div>
             </div>
         </div>
+        <script>
+            // check user level
+            var userLevel = "super admin"; // replace with actual user level
+            if (userLevel !== "super admin") {
+                // disable button if user level is not admin
+                var button = document.querySelector(
+                    "#createUniversityModal button[type='button']"
+                );
+                button.disabled = true;
+                button.title = "Only admins can create universities";
+            } else {
+                // form validation
+                var form = document.querySelector(
+                    "#createUniversityModal form"
+                );
+                form.addEventListener("submit", function (event) {
+                    // prevent form submission
+                    event.preventDefault();
+
+                    // validate inputs
+                    var universityName =
+                        document.querySelector("#universityName").value;
+                    var universityLocation = document.querySelector(
+                        "#universityLocation"
+                    ).value;
+                    var numberOfStudents =
+                        document.querySelector("#numberOfStudents").value;
+
+                    if (!universityName) {
+                        alert("Please enter a university name.");
+                        return;
+                    }
+
+                    if (!universityLocation) {
+                        alert("Please enter a university location.");
+                        return;
+                    }
+
+                    if (!numberOfStudents || numberOfStudents < 0) {
+                        alert("Please enter a valid number of students.");
+                        return;
+                    }
+
+                    // submit form if all inputs are valid
+                    alert("University created successfully!");
+                    form.reset();
+                });
+            }
+        </script>
     </body>
 </html>
