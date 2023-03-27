@@ -124,6 +124,7 @@ function login() {
                     // Clear input fields
                     document.getElementById("username").value = "";
                     document.getElementById("password").value = "";
+                    window.location.href = "testingHomepage.html";
                 }
             } else if (this.status === 404) {
                 document.getElementById("login-result").innerHTML =
