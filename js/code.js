@@ -8,9 +8,11 @@ let fullName = "";
 let uniId = 0;
 let uniUrl = "";
 
+// Function to show Univeristy List on forms
+// currently using it for RSO's and Sign Up
 window.onload = function () {
-    // Your code here
-    fetch("http://collegeeventwebsite.com/json/schools.json")
+    // fetch("http://collegeeventwebsite.com/json/schools.json")
+    fetch("http://127.0.0.1:5500/schools.json")
         .then((response) => response.json())
         .then((data) => {
             let names = data.map((obj) => obj["name"]);
@@ -138,21 +140,26 @@ function login() {
 
 function signUp() {
     document.getElementById("signup-result").innerHTML = "";
-    let name = document.getElementById("name").value;
+
     let email = document.getElementById("email").value;
     let password = document.getElementById("cfnpass").value;
-    let userLevel = document.getElementById("userlevel").value;
+    let name = document.getElementById("name").value;
+    const selectElement = document.querySelector(".my-select");
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const userLevel = selectedOption.text;
+    console.log(userLevel)
+    
     let universityId = uniId;
 
     if (!validateEmailDomain(email, uniUrl)) {
-        document.getElementById("signup-result").innerHTML =
-            "Email domain and University does not match";
+        alert("Email domain and University does not match");
         return;
     }
-    userLevel = getUserType(userLevel);
-    if (userLevel === null) {
-        document.getElementById("signup-result").innerHTML =
-            "Please choose Super Admin, Admin, or Student";
+
+    if (
+        userLevel === 'Select an option'
+    ) {
+        alert("Please choose a user level");
         return;
     }
 
@@ -161,9 +168,9 @@ function signUp() {
         email: email,
         password: password,
         universityid: universityId,
-        rsolevel: 0,
         userlevel: userLevel,
     };
+
     let jsonPayload = JSON.stringify(tmp);
     let url = urlBase + "/Signup." + extension;
     let xhr = new XMLHttpRequest();
