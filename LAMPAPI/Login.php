@@ -13,14 +13,14 @@
 		returnWithError( $conn->connect_error );
 	} else {
 
-        $stmt = $conn->prepare("SELECT ID, Name FROM Users WHERE Email = ? AND Password = ?");
+        $stmt = $conn->prepare("SELECT ID, full_name FROM Users WHERE Email = ? AND Password = ?");
 		$stmt->bind_param("ss", $inData["username"], $inData["password"]);
 		$stmt->execute();
 		$result = $stmt->get_result();
 
         if( $row = $result->fetch_assoc()  )
 		{
-			returnWithInfo( $row['Name'], $row['ID'] );
+			returnWithInfo( $row['full_name'], $row['ID'] );
 		}
 		else
 		{

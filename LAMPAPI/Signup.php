@@ -23,8 +23,8 @@
             returnWithError("Email already exists");
             http_response_code(400);
         } else {
-            $stmt = $conn->prepare("INSERT INTO Users (Name, Email, Password, UniversityID, RsoID, UserLevelID) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssiis", $inData["fullname"], $inData["email"], $inData["password"], $inData["universityid"], $inData["rsolevel"], $inData["userlevel"]);
+            $stmt = $conn->prepare("INSERT INTO Users (email, password, full_name, userlevel, university_id) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssi", $inData["email"], $inData["password"], $inData["fullname"], $inData["userlevel"], $inData["universityid"]);
             $stmt->execute();
             $stmt->close();
 
