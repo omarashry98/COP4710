@@ -28,7 +28,7 @@ body
 .box2{
     position: relative;
     width: 380px;
-    height: 800px;
+    height: 720px;
     background: #1c1c1c;
     border-radius: 8px;
     overflow: hidden;
@@ -96,8 +96,8 @@ body
     position: absolute;
     top: -50%;
     left: -50%;
-    width: 380px;
-    height: 620px;
+    width: 400px;
+    height: 700px;
     background: linear-gradient(0deg,transparent, #45f3ff, #45f3ff);
     transform-origin: bottom right;
     animation: animate 3s linear infinite;
@@ -149,7 +149,7 @@ body
 {
     position: relative;
     width: 300px;
-    margin-top: 35px;
+    margin-top: 25px;
 }
 .inputBox input
 {
@@ -206,11 +206,29 @@ body
 {
     height: 44px;;
 }
+.my-select
+{
+    position: relative;
+    left: 0;
+    bottom: 0;
+    height: 35px;
+    /* position: relative; */
+    width: 100%;
+    /* padding: 20px 10px 10px; */
+    background: transparent;
+    border: none;
+    outline: none;
+    background: #45f3ff;
+    color: #23242a;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+    z-index: 11;
+}
 
-/* .inputBox ul
+.inputBox ul
 {
     list-style: none;
-    position: absolute;
+    /* position: absolute;
     background: transparent;
     left: 0;
     bottom: 0;
@@ -219,8 +237,8 @@ body
     background: #45f3ff;
     border-radius: 4px;
     pointer-events: none;
-    z-index: 11;
-} */
+    z-index: 11; */
+}
 /* .list 
 {
     background-color: #45f3ff;
@@ -267,7 +285,7 @@ input[type="submit"]
     background:#45f3ff;
     padding: 11px 25px;
     width: 100px;
-    margin-top: 10px;
+    margin-top: 30px;
     border-radius: 4px;
     font-weight: 600;
     cursor: pointer;
