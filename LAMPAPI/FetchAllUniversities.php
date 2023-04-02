@@ -26,7 +26,7 @@
             returnWithInfo($universities);
         } else {
             returnWithError("No universities found.");
-            http_response_code(401); // Unauthorized
+            http_response_code(404); // Unauthorized
         }
 
         $conn->close();
