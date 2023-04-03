@@ -4,13 +4,17 @@ const extension = "php";
 // cookie variables
 let userId = 0;
 let fullName = "";
+let userlevel = "";
+let useremail = "";
 
 let uniId = 0;
 let uniUrl = "";
 
+// Function to show Univeristy List on forms
+// currently using it for RSO's and Sign Up
 window.onload = function () {
-    // Your code here
-    fetch("http://collegeeventwebsite.com/json/schools.json")
+    // fetch("http://collegeeventwebsite.com/json/schools.json")
+    fetch("http://127.0.0.1:5500/schools.json")
         .then((response) => response.json())
         .then((data) => {
             let names = data.map((obj) => obj["name"]);
@@ -119,41 +123,44 @@ function login() {
                 if (jsonObject.error !== "No Records found") {
                     userId = jsonObject.id;
                     fullName = jsonObject.fullName;
+                    userlevel = jsonObject.userlevel;
 
                     saveUserCookie();
                     // Clear input fields
                     document.getElementById("username").value = "";
                     document.getElementById("password").value = "";
-                    window.location.href = "testingHomepage.html";
                 }
             } else if (this.status === 404) {
-                document.getElementById("login-result").innerHTML =
-                    "Invalid Credentials";
+                alert("Invalid Credentials");
+                return;
             }
         };
         xhr.send(jsonPayload);
     } catch (err) {
-        document.getElementById("login-result").innerHTML = err.message;
+        alert(err.message);
     }
 }
 
 function signUp() {
     document.getElementById("signup-result").innerHTML = "";
-    let name = document.getElementById("name").value;
+
     let email = document.getElementById("email").value;
     let password = document.getElementById("cfnpass").value;
-    let userLevel = document.getElementById("userlevel").value;
+    let name = document.getElementById("name").value;
+    const selectElement = document.querySelector(".my-select");
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const userLevel = selectedOption.text;
+    console.log(userLevel);
+
     let universityId = uniId;
 
     if (!validateEmailDomain(email, uniUrl)) {
-        document.getElementById("signup-result").innerHTML =
-            "Email domain and University does not match";
+        alert("Email domain and University does not match");
         return;
     }
-    userLevel = getUserType(userLevel);
-    if (userLevel === null) {
-        document.getElementById("signup-result").innerHTML =
-            "Please choose Super Admin, Admin, or Student";
+
+    if (userLevel === "Select an option") {
+        alert("Please choose a user level");
         return;
     }
 
@@ -162,9 +169,9 @@ function signUp() {
         email: email,
         password: password,
         universityid: universityId,
-        rsolevel: 0,
         userlevel: userLevel,
     };
+
     let jsonPayload = JSON.stringify(tmp);
     let url = urlBase + "/Signup." + extension;
     let xhr = new XMLHttpRequest();
@@ -188,13 +195,14 @@ function signUp() {
                     document.getElementById("input").value = "";
                 }
             } else if (this.status === 400) {
-                document.getElementById("signup-result").innerHTML =
-                    "Email already exists";
+                alert("Email already exists");
+                return;
             }
         };
         xhr.send(jsonPayload);
     } catch (err) {
-        document.getElementById("signup-result").innerHTML = err.message;
+        alert(err.message);
+        return;
     }
 }
 
@@ -203,19 +211,7 @@ function validateEmailDomain(email, schoolUrl) {
     return email.includes(`${domain}.edu`);
 }
 
-function getUserType(userType) {
-    switch (userType) {
-        case "Super Admin":
-            return 1;
-        case "Admin":
-            return 2;
-        case "Student":
-            return 3;
-        default:
-            return null;
-    }
-}
-
+// Modify these functions so it works for whatever is returned in Login.php look at postman
 function saveUserCookie() {
     let minutes = 20;
     let date = new Date();
@@ -225,13 +221,19 @@ function saveUserCookie() {
         fullName +
         ",userId=" +
         userId +
+        ",userlevel=" +
+        userlevel +
+        ",useremail=" +
+        useremail +
         ";expires=" +
         date.toGMTString();
 }
 
 function readUserCookie() {
     userId = -1;
-    // let data = document.cookie;
+    fullName = "";
+    useremail = "";
+    userlevel = "";
     let data = readCookie("UserCookie");
     if (data == null) {
         window.location.href = "index.html";
@@ -240,18 +242,20 @@ function readUserCookie() {
     for (var i = 0; i < splits.length; i++) {
         let thisOne = splits[i].trim();
         let tokens = thisOne.split("=");
-        if (tokens[0] == "firstName") {
-            firstName = tokens[1];
-        } else if (tokens[0] == "lastName") {
-            lastName = tokens[1];
+        if (tokens[0] == "fullName") {
+            fullName = tokens[1];
         } else if (tokens[0] == "userId") {
             userId = parseInt(tokens[1].trim());
+        } else if (tokens[0] == "userlevel") {
+            userlevel = tokens[1];
+        } else if (tokens[0] == "useremail") {
+            useremail = tokens[1];
         }
     }
 
     if (userId < 0) {
         window.location.href = "index.html";
     } else {
-        // document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+        // document.getElementById("userName").innerHTML = "Logged in as " + fullName;
     }
 }
