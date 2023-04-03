@@ -10,22 +10,83 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <script src="schools.json"></script>
+        <link rel="stylesheet" type="text/css" href="homepageStyle.css" />
+        <!-- GOOGLE MAPS API -->
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJCH4Rz-RmD8ErAJGHas-_MavrBfc6lpc&callback=initMap"
+            async
+            defer
+        ></script>
+        <script src="js/googleMapsAPI.js"></script>
+        <!-- JS FILES FOR IMPORTANT ACTIONS -->
+        <script src="js/createEvent.js"></script>
+        <script src="js/createUniversity.js"></script>
+        <script src="js/code.js"></script>
     </head>
     <body>
-        <!-- Navigation bar -->
+        <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">College Event Website</a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarNav"
-                aria-controls="navbarNav"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div>
+                <a class="navbar-brand" href="#">College Event Website</a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="mx-auto">
+                <div id="navBarBtns">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#approvePublicEventModal"
+                    >
+                        Approve RSO
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#createEventModal"
+                    >
+                        Create Event
+                    </button>
+                    <button
+                        id="createRsoBtn"
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#createRSOModal"
+                    >
+                        Create RSO
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#createUniversityModal"
+                    >
+                        Create University
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#joinRSOModal"
+                    >
+                        Join RSO
+                    </button>
+                </div>
+            </div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -38,163 +99,791 @@
             </div>
         </nav>
 
-        <!-- Event Cards -->
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img
-                            src="https://via.placeholder.com/150"
-                            class="card-img-top"
-                            alt="..."
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title">Event Name</h5>
-                            <p class="card-text">Event Description</p>
-                            <button
-                                type="button"
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#eventModal"
-                            >
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img
-                            src="https://via.placeholder.com/150"
-                            class="card-img-top"
-                            alt="..."
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title">Event Name</h5>
-                            <p class="card-text">Event Description</p>
-                            <button
-                                type="button"
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#eventModal"
-                            >
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img
-                            src="https://via.placeholder.com/150"
-                            class="card-img-top"
-                            alt="..."
-                        />
-                        <div class="card-body">
-                            <h5 class="card-title">Event Name</h5>
-                            <p class="card-text">Event Description</p>
-                            <!-- Button to trigger modal -->
-                            <button
-                                type="button"
-                                class="btn btn-primary"
-                                data-toggle="modal"
-                                data-target="#eventModal"
-                            >
-                                View Details
-                            </button>
-                            <!-- Event Modal -->
-                            <div
-                                class="modal fade"
-                                id="eventModal"
-                                tabindex="-1"
-                                role="dialog"
-                                aria-labelledby="eventModalLabel"
-                                aria-hidden="true"
-                            >
-                                <div
-                                    class="modal-dialog modal-lg"
-                                    role="document"
-                                >
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5
-                                                class="modal-title"
-                                                id="eventModalLabel"
-                                            >
-                                                Event Details
-                                            </h5>
-                                            <button
-                                                type="button"
-                                                class="close"
-                                                data-dismiss="modal"
-                                                aria-label="Close"
-                                            >
-                                                <span aria-hidden="true"
-                                                    >&times;</span
-                                                >
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <img
-                                                            src="event-image.jpg"
-                                                            class="img-fluid"
-                                                        />
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h3>Event Name</h3>
-                                                        <p>
-                                                            Event Date and Time:
-                                                            <span
-                                                                id="eventDateTime"
-                                                            ></span>
-                                                        </p>
-                                                        <p>
-                                                            Event Location:
-                                                            <span
-                                                                id="eventLocation"
-                                                            ></span>
-                                                        </p>
-                                                        <p>
-                                                            Event Description:
-                                                            <span
-                                                                id="eventDescription"
-                                                            ></span>
-                                                        </p>
-                                                        <p>
-                                                            Contact Phone:
-                                                            <span
-                                                                id="contactPhone"
-                                                            ></span>
-                                                        </p>
-                                                        <p>
-                                                            Contact Email:
-                                                            <span
-                                                                id="contactEmail"
-                                                            ></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button
-                                                type="button"
-                                                class="btn btn-secondary"
-                                                data-dismiss="modal"
-                                            >
-                                                Close
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Filter Buttons -->
+        <div class="container my-3">
+            <div class="row justify-content-left">
+                <div class="col-md-8">
+                    <div
+                        id="filterBtn"
+                        class="event-filter-container btn-group btn-group-lg w-100"
+                        role="group"
+                    >
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="todayFilter"
+                        >
+                            Today
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="tomorrowFilter"
+                        >
+                            Tomorrow
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="weeklyFilter"
+                        >
+                            Weekly
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-secondary event-filter"
+                            id="monthlyFilter"
+                        >
+                            Monthly
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Event Cards -->
+        <div class="container mt-5">
+            <div class="row" id="eventsContainer">
+                <!-- Event cards will be appended here -->
+            </div>
+        </div>
+
+        <!-- Approve Public Event Modal -->
+        <div
+            class="modal fade"
+            id="approvePublicEventModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="approvePublicEventModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5
+                            class="modal-title"
+                            id="approvePublicEventModalLabel"
+                        >
+                            Approve Public Event
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="approvePublicEventForm">
+                            <div class="form-group">
+                                <label for="eventTitle">Event Title</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventTitle"
+                                    placeholder="Enter event title"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDescription"
+                                    >Event Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="eventDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDateTime"
+                                    >Event Date and Time</label
+                                >
+                                <input
+                                    type="datetime-local"
+                                    class="form-control"
+                                    id="eventDateTime"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventLocation"
+                                    >Event Location</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventLocation"
+                                    placeholder="Enter event location"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Contact Phone</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="contactPhone"
+                                    placeholder="Enter contact phone"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Contact Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="contactEmail"
+                                    placeholder="Enter contact email"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="approveBtn"
+                        >
+                            Approve
+                        </button>
+
+                        <script>
+                            document
+                                .getElementById("approveBtn")
+                                .addEventListener("click", function () {
+                                    // validate form before submitting
+                                    validateApprovePublicEventForm();
+                                });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create RSO Modal -->
+        <div
+            class="modal fade"
+            id="createRSOModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createRSOModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createRSOModalLabel">
+                            Create RSO
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="createRSOForm">
+                            <div class="form-group">
+                                <label for="rsoName">RSO Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rsoName"
+                                    placeholder="Enter RSO name"
+                                    required
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="rsoDescription"
+                                    >RSO Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="rsoDescription"
+                                    rows="3"
+                                    required
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="university">University</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="input"
+                                    placeholder="Enter university name"
+                                    required
+                                />
+                                <ul class="list"></ul>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rsoEmail">RSO Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="rsoEmail"
+                                    placeholder="Enter RSO email"
+                                    required
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="initialMembers"
+                                    >Initial Members</label
+                                >
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="initialMembers"
+                                    placeholder="Enter email addresses of four other students with same email domain"
+                                    required
+                                />
+                                <small
+                                    id="initialMembersHelp"
+                                    class="form-text text-muted"
+                                    >Email addresses should be separated by
+                                    commas and have the same email domain as the
+                                    RSO email.</small
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="rsoAdmin">RSO Admin</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rsoAdmin"
+                                    placeholder="Enter RSO admin name"
+                                    required
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            id="saveChangesBtn"
+                            onclick="validateRsoForm()"
+                        >
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create University Modal -->
+        <div
+            class="modal fade"
+            id="createUniversityModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createUniversityModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createUniversityModalLabel">
+                            Create University
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="universityLocation"
+                                    >University Name</label
+                                >
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="universityLocation"
+                                        placeholder="Enter university location"
+                                    />
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            id="searchButton"
+                                            onclick="geocode(document.getElementById('universityLocation'), document.getElementById('universityLat'), document.getElementById('universityLng'))"
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="universityLat">Latitude</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="universityLat"
+                                        placeholder="Latitude"
+                                        readonly
+                                    />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="universityLng">Longitude</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="universityLng"
+                                        placeholder="Longitude"
+                                        readonly
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="universityDescription"
+                                    >University Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="universityDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="numberOfStudents"
+                                    >Number of Students</label
+                                >
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="numberOfStudents"
+                                    placeholder="Enter number of students"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="universityPictures"
+                                    >University Pictures</label
+                                >
+                                <input
+                                    type="url"
+                                    class="form-control"
+                                    id="universityPictures"
+                                    name="universityPictures"
+                                    placeholder="Enter university pictures"
+                                    pattern=".*\.(jpg|jpeg|png|gif)$"
+                                    required
+                                />
+                                <small class="form-text text-muted"
+                                    >Enter a valid image URL (ending in .jpg,
+                                    .jpeg, .png, or .gif)</small
+                                >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            onClick="validateUniversity()"
+                        >
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Join RSO Modal -->
+        <div
+            class="modal fade"
+            id="joinRSOModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="joinRSOModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="joinRSOModalLabel">
+                            Join RSO
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="rsoName">RSO Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="rsoName"
+                                    placeholder="Enter RSO name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="university">University</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="university"
+                                    placeholder="Enter university name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="adminEmail">Admin Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="adminEmail"
+                                    placeholder="Enter admin email"
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            Join RSO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Event Modal -->
+        <div
+            class="modal fade"
+            id="createEventModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="createEventModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createEventModalLabel">
+                            Create Event
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="eventName">Event Name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventName"
+                                    placeholder="Enter event name"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventCategory"
+                                    >Event Category</label
+                                >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="eventCategory"
+                                    placeholder="Enter event category"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDescription"
+                                    >Event Description</label
+                                >
+                                <textarea
+                                    class="form-control"
+                                    id="eventDescription"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDate">Event Date</label>
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="eventDate"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventStartTime"
+                                    >Event Start Time</label
+                                >
+                                <input
+                                    type="time"
+                                    class="form-control"
+                                    id="eventStartTime"
+                                    name="eventStartTime"
+                                    onchange="setStopTime()"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventStopTime"
+                                    >Event Stop Time</label
+                                >
+                                <input
+                                    type="time"
+                                    class="form-control"
+                                    id="eventStopTime"
+                                    name="eventStopTime"
+                                    readonly
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventLocation"
+                                    >Event Location</label
+                                >
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="eventLocationDiv"
+                                        placeholder="Enter event location"
+                                    />
+                                    <div class="input-group-append">
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            id="searchButton"
+                                            onclick="geocode(document.getElementById('eventLocationDiv'),document.getElementById('eventLat'),document.getElementById('eventLng'))"
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <label for="eventLat">Latitude</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="eventLat"
+                                        placeholder="Latitude"
+                                        readonly
+                                    />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="eventLng">Longitude</label>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="eventLng"
+                                        placeholder="Longitude"
+                                        readonly
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone">Contact Phone</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="contactPhone"
+                                    placeholder="Enter contact phone"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Contact Email</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="contactEmail"
+                                    placeholder="Enter contact email"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="eventType">Event Type</label>
+                                <select class="form-control" id="eventType">
+                                    <option value="public">Public</option>
+                                    <option value="private">Private</option>
+                                    <option value="rso">RSO</option>
+                                </select>
+                            </div>
+                            <div id="rsoDiv" class="form-group" style="display: none">
+                                <label for="rsoNameDiv">RSO Name</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="rsoNameDiv"
+                                    placeholder="Enter RSO name"
+                                />
+                            </div>
+                            <input type="hidden" id="rsoId" value="" />
+                            <input type="hidden" id="adminId" value="" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            onClick="validateEvent(event)"
+                        >
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // JQuery to show an extra div if event is an rso
+            $(document).ready(function () {
+                $("#eventType").on("change", function () {
+                    if (this.value === "rso") {
+                        $("#rsoDiv").show();
+                    } else {
+                        $("#rsoDiv").hide();
+                    }
+                });
+            });
+
+            // Store the filter buttons in an array
+            const filterButtons = document.querySelectorAll(".event-filter");
+
+            // Add event listener to each button
+            filterButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach((btn) => {
+                        btn.classList.remove("active");
+                    });
+
+                    // Add active class to clicked button
+                    button.classList.add("active");
+                });
+            });
+
+            // Sample data - replace this with an API call to fetch events from your backend
+            const events = [
+                {
+                    id: 1,
+                    name: "Event Name 1",
+                    description: "Event Description 1",
+                    image: "https://via.placeholder.com/150",
+                },
+                {
+                    id: 2,
+                    name: "Event Name 2",
+                    description: "Event Description 2",
+                    image: "https://via.placeholder.com/150",
+                },
+                {
+                    id: 3,
+                    name: "Event Name 3",
+                    description: "Event Description 3",
+                    image: "https://via.placeholder.com/150",
+                },
+            ];
+
+            function createEventCard(event) {
+                return `
+                <div class="col-md-6 col-lg-4 mb-5">
+                  <div class="card h-100 flex-grow-1">
+                    <img src="${event.image}" class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="...">
+                    <div class="card-body d-flex flex-column">
+                      <h5 class="card-title">${event.name}</h5>
+                      <p class="card-text mb-4">${event.description}</p>
+                      <div class="mt-auto">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventModal" onclick="loadEventDetails(${event.id})">
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+
+            function loadEventDetails(eventId) {
+                // Replace this with an API call to fetch event details from your backend
+                const event = events.find((e) => e.id === eventId);
+
+                // Set event details in the modal
+                document.getElementById("eventModalLabel").innerText =
+                    event.name;
+                document.getElementById("eventDateTime").innerText =
+                    event.dateTime;
+                document.getElementById("eventLocation").innerText =
+                    event.location;
+                document.getElementById("eventDescription").innerText =
+                    event.description;
+                document.getElementById("contactPhone").innerText =
+                    event.contactPhone;
+                document.getElementById("contactEmail").innerText =
+                    event.contactEmail;
+            }
+
+            function displayEvents() {
+                const eventsContainer =
+                    document.getElementById("eventsContainer");
+                eventsContainer.innerHTML = "";
+
+                for (const event of events) {
+                    const eventCard = createEventCard(event);
+                    eventsContainer.innerHTML += eventCard;
+                }
+            }
+
+            // Call displayEvents on page load
+            displayEvents();
+        </script>
     </body>
 </html>
