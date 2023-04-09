@@ -15,7 +15,7 @@
         <link rel="stylesheet" type="text/css" href="homepageStyle.css" />
         <!-- GOOGLE MAPS API -->
         <script
-            src="https://maps.googleapis.com/maps/api/js?key=api_key&callback=initMap"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJCH4Rz-RmD8ErAJGHas-_MavrBfc6lpc&callback=initMap"
             async
             defer
         ></script>
@@ -25,28 +25,29 @@
         <script src="js/createUniversity.js"></script>
         <script src="js/code.js"></script>
     </head>
-    <body>
+    <body onload="displayEvents()">
         <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div>
-                <a class="navbar-brand" href="#">College Event Website</a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="mx-auto">
-                <div id="navBarBtns">
+            <a class="navbar-brand" href="#">College Event Website</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav mr-auto">
+                    <!-- Add any additional nav links here -->
+                </div>
+                <div class="navbar-nav">
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn"
                         data-toggle="modal"
                         data-target="#approvePublicEventModal"
                     >
@@ -54,7 +55,7 @@
                     </button>
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn"
                         data-toggle="modal"
                         data-target="#createEventModal"
                     >
@@ -63,7 +64,7 @@
                     <button
                         id="createRsoBtn"
                         type="button"
-                        class="btn btn-primary"
+                        class="btn"
                         data-toggle="modal"
                         data-target="#createRSOModal"
                     >
@@ -71,7 +72,7 @@
                     </button>
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn"
                         data-toggle="modal"
                         data-target="#createUniversityModal"
                     >
@@ -79,23 +80,16 @@
                     </button>
                     <button
                         type="button"
-                        class="btn btn-primary"
+                        class="btn"
                         data-toggle="modal"
                         data-target="#joinRSOModal"
                     >
                         Join RSO
                     </button>
+                    <button type="button" class="btn" onclick="signout()">
+                        Sign Out
+                    </button>
                 </div>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sign Up</a>
-                    </li>
-                </ul>
             </div>
         </nav>
 
@@ -111,30 +105,23 @@
                         <button
                             type="button"
                             class="btn btn-secondary event-filter"
-                            id="todayFilter"
+                            id="thisWeekFilter"
                         >
-                            Today
+                            This Week
                         </button>
                         <button
                             type="button"
                             class="btn btn-secondary event-filter"
-                            id="tomorrowFilter"
+                            id="nextWeekFilter"
                         >
-                            Tomorrow
+                            Next Week
                         </button>
                         <button
                             type="button"
                             class="btn btn-secondary event-filter"
-                            id="weeklyFilter"
+                            id="week2Filter"
                         >
-                            Weekly
-                        </button>
-                        <button
-                            type="button"
-                            class="btn btn-secondary event-filter"
-                            id="monthlyFilter"
-                        >
-                            Monthly
+                           Entire Month
                         </button>
                     </div>
                 </div>
@@ -145,6 +132,92 @@
         <div class="container mt-5">
             <div class="row" id="eventsContainer">
                 <!-- Event cards will be appended here -->
+            </div>
+        </div>
+
+        <!-- View Details modal -->
+        <div
+            class="modal fade"
+            id="eventDetailsModal"
+            tabindex="-1"
+            aria-labelledby="eventDetailsModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eventDetailsModalLabel">
+                            Event Details
+                        </h5>
+                        <!-- <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button> -->
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <h2 class="h4 mb-3" id="eventDetailsName">
+                                        Event Name
+                                    </h2>
+                                    <p>
+                                        <strong>Date:</strong>
+                                        <span id="eventDetailsDate">Date</span>
+                                    </p>
+                                    <p>
+                                        <strong>Location:</strong>
+                                        <span id="eventDetailsLocation"
+                                            >Location</span
+                                        >
+                                    </p>
+                                    <p>
+                                        <strong>Category:</strong>
+                                        <span id="eventDetailsCategory"
+                                            >Category</span
+                                        >
+                                    </p>
+                                    <p><strong>Contact:</strong></p>
+                                    <p>
+                                        <strong>Phone:</strong>
+                                        <span id="eventDetailsPhone"
+                                            >Phone</span
+                                        >
+                                    </p>
+                                    <p>
+                                        <strong>Email:</strong>
+                                        <span id="eventDetailsEmail"
+                                            >Email</span
+                                        >
+                                    </p>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div
+                                        id="eventDetailsMap"
+                                        style="width: 100%; height: 300px"
+                                    ></div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h2 class="h4 mb-3">Description</h2>
+                                    <p id="eventDetailsDescription"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -550,26 +623,17 @@
                                 <input
                                     type="text"
                                     class="form-control"
-                                    id="rsoName"
+                                    id="joinRsoName"
                                     placeholder="Enter RSO name"
                                 />
                             </div>
                             <div class="form-group">
-                                <label for="university">University</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="university"
-                                    placeholder="Enter university name"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="adminEmail">Admin Email</label>
+                                <label for="adminEmail">Email</label>
                                 <input
                                     type="email"
                                     class="form-control"
-                                    id="adminEmail"
-                                    placeholder="Enter admin email"
+                                    id="joinRsoEmail"
+                                    placeholder="Enter email"
                                 />
                             </div>
                         </form>
@@ -750,7 +814,11 @@
                                     <option value="rso">RSO</option>
                                 </select>
                             </div>
-                            <div id="rsoDiv" class="form-group" style="display: none">
+                            <div
+                                id="rsoDiv"
+                                class="form-group"
+                                style="display: none"
+                            >
                                 <label for="rsoNameDiv">RSO Name</label>
                                 <input
                                     type="email"
@@ -811,79 +879,507 @@
                 });
             });
 
-            // Sample data - replace this with an API call to fetch events from your backend
-            const events = [
+            let events = [
                 {
-                    id: 1,
-                    name: "Event Name 1",
-                    description: "Event Description 1",
-                    image: "https://via.placeholder.com/150",
+                    id: 25,
+                    name: "Theatre for Very Young Audiences: The Day I Danced with Dinosaurs",
+                    category: "Concert/Performance",
+                    description:
+                        "The Orlando REP presents The Day I Danced with Dinosaurs. Get ready to party, because everyone knows dinosaurs love to dance! The 30-minute celebration of dinosaurs, music and movement was written by Jennifer Adams-Carrasquillo 11MFA.",
+                    date: "2023-04-09",
+                    location:
+                        "Dr. Phillips Center for the Performing Arts Downtown",
+                    latitude: "28.537539",
+                    longitude: "-81.376897",
+                    contact_phone: "123-456-1222",
+                    contact_email: "boxoffice@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 32,
+                    start_time: "11:00:00",
+                    end_time: "12:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 26,
+                    name: "With More Than Words: Exploring Material Rhetorics and Social Change",
+                    category: "Workshop/Conference",
+                    description:
+                        "Curious about what quilting, activists speeches, writing and truth have in common? ",
+                    date: "2023-04-10",
+                    location: "Union West at Creative Village: 111",
+                    latitude: "28.547919",
+                    longitude: "-81.384123",
+                    contact_phone: "343-322-1237",
+                    contact_email: "Laurie.Pinkert@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 33,
+                    start_time: "13:00:00",
+                    end_time: "17:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 29,
+                    name: "Big Red Bus - Donate Blood Today!",
+                    category: "Health",
+                    description:
+                        "Help us maintain a safe and ready blood supply for cancer patients, trauma patients, or when unexpected tragedies occur. The OneBlood bus will park on Memory Mall near the Veterans Memorial.",
+                    date: "2023-04-10",
+                    location: "UCF Memory Mall",
+                    latitude: "28.604755",
+                    longitude: "-81.198791",
+                    contact_phone: "407-000-0000",
+                    contact_email: "BloodDrives@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 34,
+                    start_time: "09:00:00",
+                    end_time: "19:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 30,
+                    name: "Free Coffee and Study Space",
+                    category: "Social Event",
+                    description:
+                        "From 9:00am to 3:00 pm Monday-Friday, the Wesley Foundation space will be open as a study space for students. There is also free coffee (freshly brewed and a Keurig)!",
+                    date: "2023-04-10",
+                    location: "Wesley at UCF",
+                    latitude: "28.613895",
+                    longitude: "-81.193652",
+                    contact_phone: "123-321-1232",
+                    contact_email: "wesley.cfl@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 35,
+                    start_time: "09:00:00",
+                    end_time: "15:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 27,
+                    name: "UCF Opera Presents Speed Dating Tonight!",
+                    category: "Concert/Performance",
+                    description:
+                        "Under the direction of Thomas Potter, UCF Opera performs Speed Dating Tonight! by Michael Ching. This modern, comedic opera combines a variety of musical genres to explore the human desire for connection. Through each 90-second date, you will get a peek into the characters lives and their different approaches to dating.",
+                    date: "2023-04-12",
+                    location:
+                        "Dr. Phillips Center for the Performing Arts Downtown",
+                    latitude: "28.537539",
+                    longitude: "-81.376897",
+                    contact_phone: "123-456-1222",
+                    contact_email: "boxoffice@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 32,
+                    start_time: "13:00:00",
+                    end_time: "15:00:00",
+                    university_id: 4,
                 },
                 {
                     id: 2,
-                    name: "Event Name 2",
-                    description: "Event Description 2",
-                    image: "https://via.placeholder.com/150",
+                    name: "Ray's Event",
+                    category: "Fundraiser",
+                    description: "Fundraiser to help cure Ray's ED",
+                    date: "2023-04-15",
+                    location: "University of Central Florida",
+                    latitude: "28.602427",
+                    longitude: "-81.200060",
+                    contact_phone: "123-222-1233",
+                    contact_email: "rayadmin@knights.ucf.edu",
+                    event_type: "RSO",
+                    rso_id: 2,
+                    admin_id: 14,
+                    start_time: "14:00:00",
+                    end_time: "15:00:00",
+                    university_id: 4,
                 },
                 {
-                    id: 3,
-                    name: "Event Name 3",
-                    description: "Event Description 3",
-                    image: "https://via.placeholder.com/150",
+                    id: 31,
+                    name: "Al-Anon: Serenity Now",
+                    category: "Meeting",
+                    description:
+                        "The Al-Anon Family Groups are a fellowship of relatives and friends of alcoholics who share their experience, strength, and hope in order to solve their common problems.",
+                    date: "2023-04-15",
+                    location: "Engineering I: 427",
+                    latitude: "28.602427",
+                    longitude: "-81.200060",
+                    contact_phone: "321-345-7657",
+                    contact_email: "crc@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 36,
+                    start_time: "19:00:00",
+                    end_time: "20:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 32,
+                    name: "UCF Percussion Ensemble",
+                    category: "Concert/Performance",
+                    description:
+                        "This concert will feature performances by the UCF Percussion Ensemble and guest artist line upon line percussion in a thrilling and dynamic showcase of percussion music.",
+                    date: "2023-04-16",
+                    location:
+                        "Dr. Phillips Center for the Performing Arts Downtown",
+                    latitude: "28.537539",
+                    longitude: "-81.376897",
+                    contact_phone: "123-456-1222",
+                    contact_email: "boxoffice@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 32,
+                    start_time: "19:00:00",
+                    end_time: "21:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 22,
+                    name: "Georgia Waterfall Camping and Hiking",
+                    category: "Recreation & Exercise",
+                    description:
+                        "During the day, we will hike to several local waterfalls and enjoy the scenery. At night, we will make a campfire, cook some delicious meals and enjoy the company of other like-minded folks! ",
+                    date: "2023-04-17",
+                    location: "Tallulah Gorge State Park, Georgia",
+                    latitude: "34.742724",
+                    longitude: "-83.396476",
+                    contact_phone: "123-123-1223",
+                    contact_email: "outdoor@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 30,
+                    start_time: "13:00:00",
+                    end_time: "14:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 34,
+                    name: "Drug Take Back Event",
+                    category: "Health",
+                    description:
+                        "UCF Police Department and Student Health Services will partner to collect expired, unwanted, or unused prescription drugs as part of an anonymous, no-questions-asked national effort to curb drug abuse and safely dispose of unneeded medicine. ",
+                    date: "2023-04-17",
+                    location: "Student Union Patio",
+                    latitude: "28.601551",
+                    longitude: "-81.200456",
+                    contact_phone: "343-473-3849",
+                    contact_email: "crystal.zavallo@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 38,
+                    start_time: "10:00:00",
+                    end_time: "14:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 37,
+                    name: "Couponing 101",
+                    category: "Workshop/Conference",
+                    description:
+                        "Couponing 101 HEALTHY DOESNT HAVE TO BE EXPENSIVE! Learn the basics of couponing and save money on grocery items during our Couponing 101 Workshop.",
+                    date: "2023-04-18",
+                    location: "RWC:206",
+                    latitude: "28.595613",
+                    longitude: "-81.199489",
+                    contact_phone: "407-898-0000",
+                    contact_email: "Christine.Pugh@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 41,
+                    start_time: "15:00:00",
+                    end_time: "16:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 24,
+                    name: "Student Recital: Annalise Lang, Cello",
+                    category: "Concert/Performance",
+                    description:
+                        "View the livestream here: https://www.youtube.com/@UCFSchoolofPerformingArtsTV/streams",
+                    date: "2023-04-18",
+                    location: "Rehearsal Hall",
+                    latitude: "28.601478",
+                    longitude: "-81.202136",
+                    contact_phone: "111-111-1111",
+                    contact_email: "david.bjella@ucf.edu",
+                    event_type: "private",
+                    rso_id: null,
+                    admin_id: 31,
+                    start_time: "09:00:00",
+                    end_time: "10:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 23,
+                    name: "Learn to surf",
+                    category: "Recreation & Exercise",
+                    description:
+                        "One of our most popular trips is back for Spring 2023! Surfing is a classic Floridian adventure — come learn the basics at Ormond Beach with our Adventure Trip Leaders as your instructors.",
+                    date: "2023-04-18",
+                    location: "Ormond Beach",
+                    latitude: "29.285813",
+                    longitude: "-81.055889",
+                    contact_phone: "123-123-1222",
+                    contact_email: "outdoor@ucf.edu",
+                    event_type: "private",
+                    rso_id: null,
+                    admin_id: 30,
+                    start_time: "08:00:00",
+                    end_time: "17:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 33,
+                    name: "Kram for the Exam Writing Lab",
+                    category: "Academic",
+                    description:
+                        "Feeling stressed about the last paper of the semester? Visit the Writing Lab and clarify assignment expectations, develop a plan, brainstorm ideas, or just spend time writing!",
+                    date: "2023-04-19",
+                    location: "John C. Hitt Library: 320",
+                    latitude: "28.600217",
+                    longitude: "28.600217",
+                    contact_phone: "407-978-9657",
+                    contact_email: "katy.miller@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 37,
+                    start_time: "11:00:00",
+                    end_time: "14:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 35,
+                    name: "Used Book Sale",
+                    category: "Other",
+                    description:
+                        "To raise funds for the printing of Cypress Domes 34th issue, we are having our annual spring book sale! We are selling used books from all genres at $5 or below.",
+                    date: "2023-04-20",
+                    location: "Visual Arts Building",
+                    latitude: "28.602795",
+                    longitude: "-81.203167",
+                    contact_phone: "234-003-0000",
+                    contact_email: "jessiecq@knights.ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 39,
+                    start_time: "12:00:00",
+                    end_time: "16:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 36,
+                    name: "Coping Through Music",
+                    category: "Workshop/Conference",
+                    description:
+                        "Experience the power of music to help you lower stress, increase relaxation skills, and discover your personal rhythm. In this workshop you will learn a variety of musical coping skills. Email to receive link",
+                    date: "2023-04-20",
+                    location: "Virtual",
+                    latitude: "0.000000",
+                    longitude: "0.000000",
+                    contact_phone: "474-584-1233",
+                    contact_email: "Christine.Dassow@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 40,
+                    start_time: "13:00:00",
+                    end_time: "14:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 21,
+                    name: "Cycle Into Spring",
+                    category: "Recreation & Exercise",
+                    description:
+                        "Ring in the spring season by taking part in a month-long challenge to complete at least eight cycling classes at the Recreation and Wellness Center (RWC) in April. Participants can sign up in person at one of the RWC Cycle45 classes prior to April 1, 2023.",
+                    date: "2023-04-30",
+                    location: "Recreation and Wellness Center",
+                    latitude: "28.595613",
+                    longitude: "-81.199489",
+                    contact_phone: "123-123-1233",
+                    contact_email: "peyton.ash@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 29,
+                    start_time: "12:00:00",
+                    end_time: "13:00:00",
+                    university_id: 4,
+                },
+                {
+                    id: 28,
+                    name: "Creative Clash",
+                    category: "Entertainment",
+                    description:
+                        "Armed with markers, students and alumni from the UCF School of Visual Arts and Design race against the clock to create artwork in front of a crowd. The theme will be announced seconds before the start of the event, so come cheer on the artists and help choose a winner at the end of the competition.",
+                    date: "3023-04-11",
+                    location:
+                        "Dr. Phillips Center for the Performing Arts Downtown",
+                    latitude: "28.537539",
+                    longitude: "-81.376897",
+                    contact_phone: "123-456-1222",
+                    contact_email: "boxoffice@ucf.edu",
+                    event_type: "public",
+                    rso_id: null,
+                    admin_id: 32,
+                    start_time: "17:00:00",
+                    end_time: "18:00:00",
+                    university_id: 4,
                 },
             ];
 
             function createEventCard(event) {
+                const formattedDate = convertDateFormat(event.date);
+                const startTime12Hour = convertTo12Hour(event.start_time);
                 return `
-                <div class="col-md-6 col-lg-4 mb-5">
-                  <div class="card h-100 flex-grow-1">
-                    <img src="${event.image}" class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="...">
-                    <div class="card-body d-flex flex-column">
-                      <h5 class="card-title">${event.name}</h5>
-                      <p class="card-text mb-4">${event.description}</p>
-                      <div class="mt-auto">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventModal" onclick="loadEventDetails(${event.id})">
-                          View Details
-                        </button>
-                      </div>
+                    <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${event.name}</h5>
+                        <p class="card-text mb-1">${formattedDate} ${startTime12Hour}</p>
+                        <p class="card-text mb-1">${event.location}</p>
+                        <p class="card-text mb-4">${event.description}</p>
+                        <div class="mt-auto">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#eventDetailsModal" onclick="loadEventDetails('${event.id}')">
+                            View Details
+                            </button>
+                        </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-              `;
-            }
-
-            function loadEventDetails(eventId) {
-                // Replace this with an API call to fetch event details from your backend
-                const event = events.find((e) => e.id === eventId);
-
-                // Set event details in the modal
-                document.getElementById("eventModalLabel").innerText =
-                    event.name;
-                document.getElementById("eventDateTime").innerText =
-                    event.dateTime;
-                document.getElementById("eventLocation").innerText =
-                    event.location;
-                document.getElementById("eventDescription").innerText =
-                    event.description;
-                document.getElementById("contactPhone").innerText =
-                    event.contactPhone;
-                document.getElementById("contactEmail").innerText =
-                    event.contactEmail;
+                    </div>
+                `;
             }
 
             function displayEvents() {
                 const eventsContainer =
                     document.getElementById("eventsContainer");
-                eventsContainer.innerHTML = "";
+                const pageSize = 7;
+                let currentPage = 1;
+                const totalPages = Math.ceil(events.length / pageSize);
+                let startIndex = 0;
 
-                for (const event of events) {
-                    const eventCard = createEventCard(event);
-                    eventsContainer.innerHTML += eventCard;
+                // Display the first page of events
+                for (let i = 0; i < Math.min(pageSize, events.length); i++) {
+                    eventsContainer.innerHTML += createEventCard(events[i], i);
+                }
+
+                // Add pagination buttons if necessary
+                if (totalPages > 1) {
+                    const paginationContainer = document.createElement("div");
+                    paginationContainer.classList.add(
+                        "d-flex",
+                        "justify-content-center",
+                        "my-4"
+                    );
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const paginationButton =
+                            document.createElement("button");
+                        paginationButton.classList.add(
+                            "btn",
+                            "btn-secondary",
+                            "mx-2"
+                        );
+                        paginationButton.textContent = i;
+                        paginationButton.addEventListener("click", () => {
+                            // Calculate the start index of the events to display based on the current page
+                            currentPage = i;
+                            startIndex = (currentPage - 1) * pageSize;
+
+                            // Clear the events container and display the events for the current page
+                            eventsContainer.innerHTML = "";
+                            for (
+                                let j = startIndex;
+                                j <
+                                Math.min(startIndex + pageSize, events.length);
+                                j++
+                            ) {
+                                eventsContainer.innerHTML += createEventCard(
+                                    events[j],
+                                    j
+                                );
+                            }
+                        });
+
+                        paginationContainer.appendChild(paginationButton);
+                    }
+
+                    document.body.appendChild(paginationContainer);
                 }
             }
 
-            // Call displayEvents on page load
-            displayEvents();
+            function loadEventDetails(eventID) {
+                // Assuming you have an array of events like this:
+                // const events = [ { id: 1, name: 'Event 1', ... }, { id: 2, name: 'Event 2', ... }, ... ];
+
+                // Find the event in the events array
+                const event = events.find((e) => e.id == eventID);
+
+                // Find and store the elements to be updated
+                const modalTitle = document.getElementById(
+                    "eventDetailsModalLabel"
+                );
+                const eventName = document.getElementById("eventDetailsName");
+                const eventDateTime =
+                    document.getElementById("eventDetailsDate");
+                const eventLocation = document.getElementById(
+                    "eventDetailsLocation"
+                );
+                const eventDescription = document.getElementById(
+                    "eventDetailsDescription"
+                );
+                const eventPhone = document.getElementById("eventDetailsPhone");
+                const eventEmail = document.getElementById("eventDetailsEmail");
+                const eventCategory = document.getElementById(
+                    "eventDetailsCategory"
+                );
+                const eventIframe = document.getElementById("eventDetailsMap");
+
+                // Update the modal with the event data
+                modalTitle.value = event.name;
+                eventName.textContent = event.name;
+
+                const formattedDate = convertDateFormat(event.date);
+                const startTime12Hour = convertTo12Hour(event.start_time);
+                const endTime12Hour = convertTo12Hour(event.end_time);
+                eventDateTime.textContent = `${formattedDate} ${startTime12Hour} - ${endTime12Hour}`;
+
+                eventLocation.textContent = event.location;
+                eventDescription.textContent = event.description;
+                eventPhone.innerHTML = `${event.contact_phone}`;
+                eventEmail.innerHTML = `${event.contact_email}`;
+                eventCategory.textContent = event.category;
+
+                const mapOptions = {
+                    zoom: 14,
+                    center: new google.maps.LatLng(
+                        event.latitude,
+                        event.longitude
+                    ),
+                };
+                const map = new google.maps.Map(eventIframe, mapOptions);
+                const marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(
+                        event.latitude,
+                        event.longitude
+                    ),
+                    map: map,
+                });
+            }
+
+            function convertTo12Hour(time) {
+                const [hours, minutes] = time.split(":");
+                const hour = parseInt(hours, 10);
+                const ampm = hour >= 12 ? "pm" : "am";
+                const hour12 = hour % 12 || 12;
+
+                return `${hour12}:${minutes} ${ampm}`;
+            }
+
+            function convertDateFormat(dateString) {
+                const [year, month, day] = dateString.split("-");
+                const shortYear = year.slice(2);
+                return `${month}/${day}/${shortYear}`;
+            }
         </script>
     </body>
 </html>
