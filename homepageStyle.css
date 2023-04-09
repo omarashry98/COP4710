@@ -1,8 +1,78 @@
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-body {
+    background-color: #f8f9fa;
+}
+
+.modal-footer {
+    background-color: #e9ecef;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 .card {
-    min-height: 400px;
-    margin-bottom: 30px;
-    flex-grow: 2;
-    width: 208.5%;
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.card-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.card-footer {
+    background-color: #f8f8f8;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-footer p {
+    margin: 0;
+}
+
+.card-footer button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.card-footer button:hover {
+    background-color: #0062cc;
+    cursor: pointer;
 }
 
 #eventsContainer {
@@ -43,18 +113,45 @@
     margin-bottom: -100px;
 }
 
-.navbar {
+.navbar-nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
-.navbar-brand,
-.nav-link {
+.navbar-nav button {
+    margin-right: 10px;
     color: #333;
-    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease;
 }
 
-#navBarBtns {
-    margin-left: 20px;
+.navbar-nav button:hover {
+    box-shadow: 0 0 0 2px #000;
+}
+
+/* Responsive rules */
+@media (max-width: 767px) {
+    #eventsContainer {
+        padding: 20px 0;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 992px) {
+    .card {
+        width: 200%;
+    }
+}
+
+@media (max-width: 767px) {
+    .navbar-btns {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }
