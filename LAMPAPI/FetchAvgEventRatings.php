@@ -15,18 +15,16 @@
         $stmt->bind_param("i", $event_id);
         $stmt->execute();
         $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-        if ($result->num_rows == 0) {
+        if ($row["avg_rating"] === NULL) {
             returnWithError("No ratings found for the specified event.");
             http_response_code(404);
+        } else {
+            $avg_rating = $row["avg_rating"];
             $conn->close();
-            exit();
+            returnWithInfo($avg_rating);
         }
-
-        $row = $result->fetch_assoc();
-        $avg_rating = $row["avg_rating"];
-        $conn->close();
-        returnWithInfo($avg_rating);
     }
 
     function getRequestInfo()
