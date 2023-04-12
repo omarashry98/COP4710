@@ -143,7 +143,7 @@ function searchUniversity(universityName) {
             } else if (this.staus === 404) {
                 return -1;
             }
-        }
+        };
     } catch (err) {
         console.log(err.message);
         return;
@@ -176,11 +176,11 @@ function saveUserCookie() {
 }
 
 function readUserCookie() {
-    let userId = -1;
-    let fullName = "";
-    let useremail = "";
-    let userlevel = "";
-    let universityId = "";
+    userId = -1;
+    fullName = "";
+    useremail = "";
+    userlevel = "";
+    universityId = "";
 
     const data = document.cookie.match(/(^|;) *UserCookie=([^;]*)/);
     if (data) {
@@ -205,7 +205,29 @@ function readUserCookie() {
 
     if (userId < 0) {
         window.location.href = "index.html";
-    } else {
-        // document.getElementById("userName").innerHTML = "Logged in as " + fullName;
     }
 }
+
+// Jquery to display buttons according to user level
+$(document).ready(function () {
+    // Assuming userLevel is already defined and has a value
+    // For example: var userLevel = "superAdmin";
+
+    // Show or hide buttons based on the userLevel
+    function displayButtons() {
+        // Hide all role-specific buttons by default
+        $(".super-admin-only, .admin-only, .student-only").hide();
+
+        // Show buttons based on userLevel
+        if (userlevel === "super admin") {
+            $(".super-admin-only").show();
+        } else if (userlevel === "admin") {
+            $(".admin-only").show();
+        } else if (userlevel === "student") {
+            $(".student-only").show();
+        }
+    }
+
+    // Call the displayButtons function to set the visibility of buttons
+    displayButtons();
+});
