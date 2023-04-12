@@ -4,13 +4,16 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 
+    $universityid = $inData['universityid'];
+
     $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4710");
     if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
 	} else {
 
-        $stmt = $conn->prepare("SELECT id, name, category, description, date, location, latitude, longitude, contact_phone, contact_email, event_type, rso_id, admin_id, start_time, end_time, university_id FROM Events");
+        $stmt = $conn->prepare("SELECT id, name, category, description, date, location, latitude, longitude, contact_phone, contact_email, event_type, rso_id, admin_id, start_time, end_time, university_id FROM Events where university_id= ? ORDER BY date ASC");
+        $stmt->bind_param("i", $universityid);
         $stmt->execute();
         $result = $stmt->get_result();
 
