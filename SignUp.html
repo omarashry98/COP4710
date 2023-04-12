@@ -4,8 +4,9 @@
         <meta charset="UTF-8" />
         <title>SignUp Form</title>
         <link rel="stylesheet" href="styles.css" />
-        <script src="script.js"></script>
-        <script src="json/schools.json"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="schools.json"></script>
+        <script src="js/code.js"></script>
     </head>
     <body>
         <div class="box2">
@@ -27,37 +28,49 @@
                     <span>Repeat Password</span>
                     <input id="cfnpass" type="password" required="required" />
                 </div>
-
                 <div class="inputBox">
-                    <span>Enter your university</span>
+                    <span>User Level</span>
+                    <select class="my-select">
+                        <option value="" disabled selected>
+                            Select an option
+                        </option>
+                        <option value="student">Student</option>
+                        <option value="superadmin">Super Admin</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div
+                    id="universityDiv"
+                    class="inputBox"
+                    style="display: none"
+                >
+                    <span>University Name</span>
                     <input
                         type="text"
-                        id="input"
-                        required="required"
-                        autocomplete="off"
+                        class="form-control"
+                        id="universityNameDiv"
                     />
-                    <ul class="list"></ul>
-                </div>
-                <!-- <div class="inputBox">
-                    <span>User Level</span>
-                    <input id="userlevel" type="text" required="required" />
-                </div> -->
-                <div class="inputBox">
-                  <span>User Level</span>
-                  <select class="my-select">
-                    <option value="" disabled selected>Select an option</option>
-                    <option value="option3">Student</option>
-                    <option value="option1">Super Admin</option>
-                    <option value="option2">Admin</option>
-                  </select>
                 </div>
 
-                <input type="submit" value="Sign Up" onClick="signUp()"/>
+                <input type="submit" value="Sign Up" onClick="signUp()" />
                 <div class="links">
                     <a href="index.html">Already have an Account?</a>
                 </div>
                 <div id="signup-result"></div>
             </div>
         </div>
+
+        <script>
+            // JQuery to show an extra div if event is an rso
+            $(document).ready(function () {
+                $(".my-select").on("change", function () {
+                    if ($(this).val() !== "superadmin") {
+                        $("#universityDiv").show();
+                    } else {
+                        $("#universityDiv").hide();
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
