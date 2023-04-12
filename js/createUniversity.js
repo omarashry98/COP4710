@@ -8,15 +8,12 @@ let universityUrl = "";
 
 function validateUniversity() {
     // make sure you add functionality to check if the user is a super admin
-
-    if (userlevel !== "super admin") {
-        alert("Only Super Admins can create a University");
-        return;
-    }
+    readUserCookie();
 
     universityName = document.getElementById("universityLocation").value;
     universityDesc = document.getElementById("universityDescription").value;
     universityStudents = document.getElementById("numberOfStudents").value;
+    console.log(universityStudents);
     universityUrl = document.getElementById("universityPictures").value;
     universityLat = document.getElementById("universityLat").value;
     universityLong = document.getElementById("universityLng").value;
@@ -31,16 +28,10 @@ function validateUniversity() {
     }
 
     // Check if number of students is a valid number
-    if (isNaN(numberOfStudents)) {
+    if (!isNaN(numberOfStudents)) {
         alert("Please enter a valid number of students.");
         return false;
     }
-
-    // // Check if university pictures is a valid URL
-    // if (universityUrl !== "" && !isValidUrl(universityUrl)) {
-    //     alert("Please enter a valid URL for university pictures.");
-    //     return false;
-    // }
 
     createUniversity();
 }
@@ -65,7 +56,7 @@ function createUniversity() {
     };
 
     let jsonPayload = JSON.stringify(tmp);
-    let url = urlBase + "/Login." + extension;
+    let url = urlBase + "/CreateUniversity." + extension;
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
@@ -73,10 +64,13 @@ function createUniversity() {
         xhr.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                // do something to notify the user the University has been created
+               window.location.href="homepage.html";
             }
         }
+        xhr.send(jsonPayload);
     } catch (err) {
-        alert(err.message);
+        console.log(err.message);
+        return;
     }
 }
 
