@@ -6,101 +6,7 @@ let userId = 0;
 let fullName = "";
 let userlevel = "";
 let useremail = "";
-
-let uniId = 0;
-let uniUrl = "";
-
-// Function to show Univeristy List on forms
-// currently using it for RSO's and Sign Up
-window.onload = function () {
-    // fetch("http://collegeeventwebsite.com/json/schools.json")
-    fetch("http://127.0.0.1:5500/schools.json")
-        .then((response) => response.json())
-        .then((data) => {
-            let names = data.map((obj) => obj["name"]);
-            let sortedNames = names.sort();
-
-            let input = document.getElementById("input");
-
-            input.addEventListener("keyup", (e) => {
-                removeElements();
-                for (let i of sortedNames) {
-                    if (
-                        i.toLowerCase().startsWith(input.value.toLowerCase()) &&
-                        input.value != ""
-                    ) {
-                        let listItem = document.createElement("li");
-
-                        listItem.classList.add("list-items");
-                        listItem.style.cursor = "pointer";
-                        listItem.setAttribute(
-                            "data-university-id",
-                            data.find((obj) => obj["name"] === i).id
-                        ); // add data-university-id attribute
-
-                        listItem.setAttribute(
-                            "data-university-email",
-                            data.find((obj) => obj["name"] === i).school_url
-                        ); // add data-university-email attribute
-
-                        let word =
-                            "<b>" + i.substr(0, input.value.length) + "</b>";
-                        word += i.substr(input.value.length);
-
-                        listItem.innerHTML = word;
-                        const ulElement = document
-                            .querySelector(".list")
-                            .appendChild(listItem);
-                        ulElement.style.backgroundColor = "#45f3ff";
-                        ulElement.style.borderRadius = "0 0 5px 5px";
-                        ulElement.style.top = "100%"; // positions the list beneath the input box
-                        ulElement.style.position = "relative";
-                        ulElement.style.width = "100%";
-                        ulElement.style.zIndex = "999";
-                    }
-                }
-                addListItemsEventListeners();
-            });
-
-            function addListItemsEventListeners() {
-                const listItems = document.querySelectorAll(".list-items");
-                listItems.forEach((listItem) => {
-                    listItem.addEventListener("click", () => {
-                        input.value = listItem.textContent;
-                        const universityId =
-                            listItem.getAttribute("data-university-id"); // retrieve university id
-                        const universityEmail = listItem.getAttribute(
-                            "data-university-email"
-                        ); // retrieve university email
-                        uniId = universityId;
-                        uniUrl = universityEmail;
-                        removeElements();
-                    });
-                });
-            }
-
-            function removeElements() {
-                let items = document.querySelectorAll(".list-items");
-                items.forEach((item) => {
-                    item.remove();
-                });
-            }
-
-            document.addEventListener("click", (e) => {
-                const dropdown = document.querySelector(".list");
-                if (!dropdown.contains(e.target)) {
-                    removeElements();
-                }
-            });
-
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") {
-                    removeElements();
-                }
-            });
-        })
-        .catch((error) => console.log(error));
-};
+let universityId = 0;
 
 function login() {
     // Clear the login result regardless of status
@@ -124,11 +30,12 @@ function login() {
                     userId = jsonObject.id;
                     fullName = jsonObject.fullName;
                     userlevel = jsonObject.userlevel;
+                    useremail = jsonObject.email;
+                    universityId = jsonObject.university_id;
 
                     saveUserCookie();
                     // Clear input fields
-                    document.getElementById("username").value = "";
-                    document.getElementById("password").value = "";
+                    window.location.href = "homepage.html";
                 }
             } else if (this.status === 404) {
                 alert("Invalid Credentials");
@@ -141,26 +48,47 @@ function login() {
     }
 }
 
+function signOut() {
+    // Clear user data
+    userId = 0;
+    fullName = "";
+    useremail = "";
+    userlevel = "";
+    universityId = "";
+
+    // Delete the UserCookie cookie
+    document.cookie =
+        "UserCookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    // Redirect to login page
+    window.location.href = "index.html";
+}
+
 function signUp() {
     document.getElementById("signup-result").innerHTML = "";
 
     let email = document.getElementById("email").value;
     let password = document.getElementById("cfnpass").value;
     let name = document.getElementById("name").value;
+    let universityname = document.getElementById("universityNameDiv").value;
+    let universityId = searchUniversity(universityname);
     const selectElement = document.querySelector(".my-select");
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     const userLevel = selectedOption.text;
-    console.log(userLevel);
 
-    let universityId = uniId;
+    if (universityId === -1) {
+        alert("University does not exist.");
+        return;
+    }
 
-    if (!validateEmailDomain(email, uniUrl)) {
-        alert("Email domain and University does not match");
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email");
         return;
     }
 
     if (userLevel === "Select an option") {
-        alert("Please choose a user level");
+        alert("Please choose a user level.");
         return;
     }
 
@@ -182,17 +110,8 @@ function signUp() {
             if (this.readyState === 4 && this.status === 200) {
                 let jsonObject = JSON.parse(xhr.responseText);
                 if (jsonObject.error === "") {
-                    userId = jsonObject.id;
-                    fullName = jsonObject.fullName;
-
-                    saveUserCookie();
                     // move them to another page
-                    document.getElementById("name").value = "";
-                    document.getElementById("email").value = "";
-                    document.getElementById("pass").value = "";
-                    document.getElementById("cfnpass").value = "";
-                    document.getElementById("userlevel").value = "";
-                    document.getElementById("input").value = "";
+                    window.location.href = "index.html";
                 }
             } else if (this.status === 400) {
                 alert("Email already exists");
@@ -201,7 +120,32 @@ function signUp() {
         };
         xhr.send(jsonPayload);
     } catch (err) {
-        alert(err.message);
+        console.log(err.message);
+        return;
+    }
+}
+
+function searchUniversity(universityName) {
+    let tmp = {
+        name: universityName,
+    };
+
+    let jsonPayload = JSON.stringify(tmp);
+    let url = urlBase + "/SearchUniversity." + extension;
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    try {
+        xhr.onreadystatechange = function () {
+            if (this.status === 200) {
+                let jsonObject = JSON.parse(xhr.responseText);
+                return jsonObject.id;
+            } else if (this.staus === 404) {
+                return -1;
+            }
+        }
+    } catch (err) {
+        console.log(err.message);
         return;
     }
 }
@@ -225,31 +169,37 @@ function saveUserCookie() {
         userlevel +
         ",useremail=" +
         useremail +
+        ",universityid=" +
+        universityId +
         ";expires=" +
         date.toGMTString();
 }
 
 function readUserCookie() {
-    userId = -1;
-    fullName = "";
-    useremail = "";
-    userlevel = "";
-    let data = readCookie("UserCookie");
-    if (data == null) {
-        window.location.href = "index.html";
-    }
-    let splits = data.split(",");
-    for (var i = 0; i < splits.length; i++) {
-        let thisOne = splits[i].trim();
-        let tokens = thisOne.split("=");
-        if (tokens[0] == "fullName") {
-            fullName = tokens[1];
-        } else if (tokens[0] == "userId") {
-            userId = parseInt(tokens[1].trim());
-        } else if (tokens[0] == "userlevel") {
-            userlevel = tokens[1];
-        } else if (tokens[0] == "useremail") {
-            useremail = tokens[1];
+    let userId = -1;
+    let fullName = "";
+    let useremail = "";
+    let userlevel = "";
+    let universityId = "";
+
+    const data = document.cookie.match(/(^|;) *UserCookie=([^;]*)/);
+    if (data) {
+        const cookieValue = data[2];
+        const splits = cookieValue.split(",");
+        for (let i = 0; i < splits.length; i++) {
+            const thisOne = splits[i].trim();
+            const tokens = thisOne.split("=");
+            if (tokens[0] === "fullName") {
+                fullName = tokens[1];
+            } else if (tokens[0] === "userId") {
+                userId = parseInt(tokens[1].trim());
+            } else if (tokens[0] === "userlevel") {
+                userlevel = tokens[1];
+            } else if (tokens[0] === "useremail") {
+                useremail = tokens[1];
+            } else if (tokens[0] === "universityid") {
+                universityId = tokens[1];
+            }
         }
     }
 
