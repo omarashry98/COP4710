@@ -24,6 +24,7 @@
         <script src="js/createEvent.js"></script>
         <script src="js/createUniversity.js"></script>
         <script src="js/code.js"></script>
+        
     </head>
     <body onload="displayEvents()">
         <!-- Navigation Bar -->
@@ -86,7 +87,7 @@
                     >
                         Join RSO
                     </button>
-                    <button type="button" class="btn" onclick="signout()">
+                    <button type="button" class="btn" onclick="signOut()">
                         Sign Out
                     </button>
                 </div>
@@ -104,7 +105,7 @@
                     >
                         <button
                             type="button"
-                            class="btn btn-secondary event-filter"
+                            class="btn btn-secondary event-filter active"
                             id="thisWeekFilter"
                         >
                             This Week
@@ -119,9 +120,9 @@
                         <button
                             type="button"
                             class="btn btn-secondary event-filter"
-                            id="week2Filter"
+                            id="nextMonthFilter"
                         >
-                           Entire Month
+                            Entire Month
                         </button>
                     </div>
                 </div>
@@ -852,33 +853,6 @@
         </div>
 
         <script>
-            // JQuery to show an extra div if event is an rso
-            $(document).ready(function () {
-                $("#eventType").on("change", function () {
-                    if (this.value === "rso") {
-                        $("#rsoDiv").show();
-                    } else {
-                        $("#rsoDiv").hide();
-                    }
-                });
-            });
-
-            // Store the filter buttons in an array
-            const filterButtons = document.querySelectorAll(".event-filter");
-
-            // Add event listener to each button
-            filterButtons.forEach((button) => {
-                button.addEventListener("click", () => {
-                    // Remove active class from all buttons
-                    filterButtons.forEach((btn) => {
-                        btn.classList.remove("active");
-                    });
-
-                    // Add active class to clicked button
-                    button.classList.add("active");
-                });
-            });
-
             let events = [
                 {
                     id: 25,
@@ -1227,6 +1201,95 @@
                 },
             ];
 
+            // Get the filter button container
+            const filterBtn = document.querySelector("#filterBtn");
+
+            // Add event listener to the filter buttons
+            filterBtn.addEventListener("click", (event) => {
+                // Get the clicked button and its ID
+                const clickedBtn = event.target;
+                const btnId = clickedBtn.id;
+
+                // Get the start and end of the current week
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                const startOfWeek = new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate() - dayOfWeek
+                );
+                const endOfWeek = new Date(
+                    today.getFullYear(),
+                    today.getMonth(),
+                    today.getDate() + (6 - dayOfWeek)
+                );
+
+                if (btnId === "thisWeekFilter") {
+                    // If "This Week" button is selected, filter events based on the start and end of the current week
+                    const filteredEvents = events.filter((event) => {
+                        const eventDate = new Date(event.date);
+                        return (
+                            eventDate >= startOfWeek && eventDate <= endOfWeek
+                        );
+                    });
+                    // Call the function to display the filtered events
+                    displayEvents(filteredEvents);
+                } else if (btnId === "nextWeekFilter") {
+                    // If "Next Week" button is selected, filter events based on the start and end of next week
+                    const startOfNextWeek = new Date(
+                        startOfWeek.getFullYear(),
+                        startOfWeek.getMonth(),
+                        startOfWeek.getDate() + 7
+                    );
+                    const endOfNextWeek = new Date(
+                        endOfWeek.getFullYear(),
+                        endOfWeek.getMonth(),
+                        endOfWeek.getDate() + 7
+                    );
+                    const filteredEvents = events.filter((event) => {
+                        const eventDate = new Date(event.date);
+                        return (
+                            eventDate >= startOfNextWeek &&
+                            eventDate <= endOfNextWeek
+                        );
+                    });
+                    // Call the function to display the filtered events
+                    displayEvents(filteredEvents);
+                } else if (btnId === "nextMonthFilter") {
+                    // If "Entire Month" button is selected, display all events
+                    displayEvents(events);
+                }
+            });
+
+            
+            // JQuery to show an extra div if event is an rso
+            $(document).ready(function () {
+                $("#eventType").on("change", function () {
+                    if (this.value === "rso") {
+                        $("#rsoDiv").show();
+                    } else {
+                        $("#rsoDiv").hide();
+                    }
+                });
+            });
+
+            // Store the filter buttons in an array
+            const filterButtons = document.querySelectorAll(".event-filter");
+
+            // Add event listener to each button
+            filterButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach((btn) => {
+                        btn.classList.remove("active");
+                    });
+
+                    // Add active class to clicked button
+                    button.classList.add("active");
+                });
+            });
+
+            
             function createEventCard(event) {
                 const formattedDate = convertDateFormat(event.date);
                 const startTime12Hour = convertTo12Hour(event.start_time);
@@ -1377,8 +1440,7 @@
 
             function convertDateFormat(dateString) {
                 const [year, month, day] = dateString.split("-");
-                const shortYear = year.slice(2);
-                return `${month}/${day}/${shortYear}`;
+                return `${month}/${day}/${year}`;
             }
         </script>
     </body>
