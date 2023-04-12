@@ -26,8 +26,8 @@
 		returnWithError( $conn->connect_error );
 	} else {
         // Check if there are any events at the same location and time
-        $stmt = $conn->prepare("SELECT id FROM Events WHERE location = ? AND start_time = ? AND end_time = ?");
-        $stmt->bind_param("sss", $location, $start_time, $end_time);
+        $stmt = $conn->prepare("SELECT id FROM Events WHERE location = ? AND start_time = ? AND end_time = ? and date = ?");
+        $stmt->bind_param("ssss", $location, $start_time, $end_time, $date);
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -38,15 +38,15 @@
             exit();
         }
        
-        // Check if event is public without RSO
-        if ($event_type === "public" && !$rso_id) {
-            // TODO: Implement event approval by super admin
-            // For now, return an error and prevent insertion
-            returnWithError("Public events without an RSO must be approved by the super admin.");
-            http_response_code(403); // Forbidden
-            $conn->close();
-            exit();
-        }
+        // // Check if event is public without RSO
+        // if ($event_type === "public" && !$rso_id) {
+        //     // TODO: Implement event approval by super admin
+        //     // For now, return an error and prevent insertion
+        //     returnWithError("Public events without an RSO must be approved by the super admin.");
+        //     http_response_code(403); // Forbidden
+        //     $conn->close();
+        //     exit();
+        // }
 
         // Insert the event into the database
         $stmt = $conn->prepare("INSERT INTO Events (name, category, description, date, location, latitude, longitude, contact_phone, contact_email, event_type, rso_id, admin_id, start_time, end_time, university_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
