@@ -27,6 +27,9 @@
         <script src="js/code.js"></script>
         <script src="js/fetchEvents.js"></script>
         <script src="js/createEvent.js"></script>
+        <script src="js/createRso.js"></script>
+        <script src="js/createUniversity.js"></script>
+        <script src="js/joinRSO.js"></script>
     </head>
     <body>
         <!-- Navigation Bar -->
@@ -48,14 +51,14 @@
                     <!-- Add any additional nav links here -->
                 </div>
                 <!-- Super Admin Buttons -->
-                <button
+                <!-- <button
                     type="button"
                     class="btn super-admin-only"
                     data-toggle="modal"
                     data-target="#approvePublicEventModal"
                 >
                     Approve RSO
-                </button>
+                </button> -->
                 <button
                     type="button"
                     class="btn super-admin-only"
@@ -95,6 +98,9 @@
                 </button>
 
                 <!-- Sign Out Button (Accessible for all) -->
+                <button type="button" class="btn" >
+                    Leave RSO
+                </button>
                 <button type="button" class="btn" onclick="signOut()">
                     Sign Out
                 </button>
@@ -750,7 +756,7 @@
                         >
                             Close
                         </button>
-                        <button type="button" class="btn btn-primary">
+                        <button type="button" class="btn btn-primary" onclick="perpareJoinRso()">
                             Join RSO
                         </button>
                     </div>
