@@ -14,14 +14,12 @@
 
         <link rel="stylesheet" type="text/css" href="homepageStyle.css" />
 
-
         <!-- GOOGLE MAPS API -->
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJCH4Rz-RmD8ErAJGHas-_MavrBfc6lpc"
             async
             defer
         ></script>
-
 
         <!-- JS FILES FOR APP FUNCTIONALITY -->
         <script src="js/code.js"></script>
@@ -30,6 +28,7 @@
         <script src="js/createRso.js"></script>
         <script src="js/createUniversity.js"></script>
         <script src="js/joinRSO.js"></script>
+        <script src="js/leaveRso.js"></script>
     </head>
     <body>
         <!-- Navigation Bar -->
@@ -98,7 +97,12 @@
                 </button>
 
                 <!-- Sign Out Button (Accessible for all) -->
-                <button type="button" class="btn" >
+                <button
+                    type="button"
+                    class="btn"
+                    data-toggle="modal"
+                    data-target="#leaveRSOModal"
+                >
                     Leave RSO
                 </button>
                 <button type="button" class="btn" onclick="signOut()">
@@ -756,8 +760,67 @@
                         >
                             Close
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="perpareJoinRso()">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            onclick="perpareJoinRso()"
+                        >
                             Join RSO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEAVE RSO MODAL -->
+        <div
+            class="modal fade"
+            id="leaveRSOModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="leaveRSOModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="leaveRSOModalLabel">
+                            Leave RSO
+                        </h5>
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="leaveRsoName">RSO Name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="leaveRsoName"
+                                placeholder="Enter RSO name"
+                            />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-danger"
+                            onclick="prepareLeaveRso()"
+                        >
+                            Leave RSO
                         </button>
                     </div>
                 </div>
@@ -899,7 +962,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="createEventContactPhone">Contact Phone</label>
+                                <label for="createEventContactPhone"
+                                    >Contact Phone</label
+                                >
                                 <input
                                     type="text"
                                     class="form-control"
@@ -908,7 +973,9 @@
                                 />
                             </div>
                             <div class="form-group">
-                                <label for="createEventContactEmail">Contact Email</label>
+                                <label for="createEventContactEmail"
+                                    >Contact Email</label
+                                >
                                 <input
                                     type="email"
                                     class="form-control"
