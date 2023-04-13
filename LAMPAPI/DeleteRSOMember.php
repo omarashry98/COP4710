@@ -37,7 +37,7 @@
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows === 0) {
+        if ($result->num_rows > 0) {
             returnWithError("User is an admin for this RSO.");
             http_response_code(403); // Forbidden
             $conn->close();
