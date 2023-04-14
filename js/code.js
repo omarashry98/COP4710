@@ -64,14 +64,14 @@ function signOut() {
     window.location.href = "index.html";
 }
 
-function signUp() {
+async function signUp() {
     document.getElementById("signup-result").innerHTML = "";
 
     let email = document.getElementById("email").value;
     let password = document.getElementById("cfnpass").value;
     let name = document.getElementById("name").value;
     let universityname = document.getElementById("universityNameDiv").value;
-    let universityId = searchUniversity(universityname);
+    let universityId = await searchUniversity(universityname);
     const selectElement = document.querySelector(".my-select");
     const selectedOption = selectElement.options[selectElement.selectedIndex];
     const userLevel = selectedOption.text;
@@ -125,29 +125,36 @@ function signUp() {
     }
 }
 
-function searchUniversity(universityName) {
-    let tmp = {
-        name: universityName,
-    };
 
-    let jsonPayload = JSON.stringify(tmp);
-    let url = urlBase + "/SearchUniversity." + extension;
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-type", "application/json");
-    try {
+function searchUniversity(universityName) {
+    return new Promise((resolve, reject) => {
+        let tmp = {
+            name: universityName,
+        };
+
+        let jsonPayload = JSON.stringify(tmp);
+        let url = urlBase + "/SearchUniversity." + extension;
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json");
         xhr.onreadystatechange = function () {
-            if (this.status === 200) {
-                let jsonObject = JSON.parse(xhr.responseText);
-                return jsonObject.id;
-            } else if (this.staus === 404) {
-                return -1;
+            if (xhr.readyState === 4) {
+                if (this.status === 200) {
+                    let jsonObject = JSON.parse(xhr.responseText);
+                    resolve(jsonObject.id);
+                } else if (this.status === 404) {
+                    resolve(-1);
+                }
             }
         };
-    } catch (err) {
-        console.log(err.message);
-        return;
-    }
+
+        try {
+            xhr.send(jsonPayload);
+        } catch (err) {
+            console.log(err.message);
+            reject(err);
+        }
+    });
 }
 
 function validateEmailDomain(email, schoolUrl) {
@@ -206,7 +213,9 @@ function readUserCookie() {
     if (userId < 0) {
         window.location.href = "index.html";
     }
+
 }
+
 
 // Jquery to display buttons according to user level
 $(document).ready(function () {
